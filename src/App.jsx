@@ -24,7 +24,7 @@ const SYSTEM_LABELS = [
   { max: 500,  label: "Micro systeem",  desc: "Ideaal voor kamperen of kleine installaties" },
   { max: 1500, label: "Klein systeem",  desc: "Geschikt voor een tiny house of caravan" },
   { max: 4000, label: "Medium systeem", desc: "Goed voor een volledig off-grid weekendverblijf" },
-  { max: 9999, label: "Groot systeem",  desc: "Volledig off-grid woning of professioneel gebruik" },
+  { max: 9999, label: "Groot systeem",  desc: "Volledige off-grid woning of professioneel gebruik" },
 ];
 
 const VICTRON_MODELS = [
@@ -120,7 +120,7 @@ export default function App() {
           </h1>
 
           <p style={{ fontSize:14, color:`rgba(45,90,61,0.7)`, lineHeight:1.75, maxWidth:560, margin:"0 auto 28px" }}>
-            Bereken je dagelijks verbruik, het benodigde zonnepaneel vermogen én de juiste Victron omvormer voor jouw off-grid installatie.
+            Bereken je dagelijks verbruik, het benodigde zonnepaneelvermogen en de juiste Victron-omvormer voor jouw off-grid installatie.
           </p>
 
           {/* Stap indicator */}
@@ -244,7 +244,7 @@ export default function App() {
               </p>
               {/* Zonnepaneel advies */}
               <div style={{ background:"rgba(193,122,58,0.12)", border:"1px solid rgba(193,122,58,0.3)", borderRadius:2, padding:"14px 16px" }}>
-                <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:8 }}>Zonnepaneel advies</div>
+                <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:8 }}>Zonnepaneeladvies</div>
                 <p style={{ color:T.tekstZacht, fontSize:13, margin:0, lineHeight:1.75 }}>
                   Om zo lang mogelijk off-grid te blijven adviseren wij minimaal{" "}
                   <strong style={{ color:T.groen, fontSize:15, fontWeight:800 }}>{totalWp.toLocaleString()} Wp</strong>{" "}
@@ -255,9 +255,9 @@ export default function App() {
               </div>
             </div>
 
-            {/* Accu advies */}
+            {/* Accuadvies */}
             <div style={{ ...card, background:"rgba(45,90,61,0.04)", marginBottom:16 }}>
-              <div style={sectionLabel}>Accu advies</div>
+              <div style={sectionLabel}>Accuadvies</div>
               <p style={{ color:T.tekstZacht, fontSize:13, margin:"0 0 18px", lineHeight:1.7 }}>
                 Voor een comfortabele off-grid ervaring adviseren wij minimaal 2 dagen accucapaciteit.
                 Zo voorkom je een lege accu en verleng je de levensduur van je accu aanzienlijk.
@@ -339,17 +339,17 @@ export default function App() {
         {step===3&&(
           <div>
             <div style={card}>
-              <div style={sectionLabel}>Stap 3 — Omvormer advies</div>
+              <div style={sectionLabel}>Stap 3 — Omvormeradvies</div>
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten staan <em style={{ fontStyle:"normal", color:T.brons }}>langdurig</em> gelijktijdig aan?</h2>
               <p style={{ color:T.tekstZacht, fontSize:14, margin:"0 0 20px", lineHeight:1.6 }}>
-                Vink de apparaten aan die maximaal tegelijk aan staan. Zo krijg je een goed beeld van wat de omvormer continu moet kunnen leveren, en dat bepaalt welke Victron omvormer je nodig hebt.
+                Vink de apparaten aan die maximaal tegelijk aan staan. Zo krijg je een goed beeld van wat de omvormer continue moet kunnen leveren, en dat bepaalt welke Victron omvormer je nodig hebt.
               </p>
 
               {/* Uitleg */}
               <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"13px 16px", marginBottom:20 }}>
-                <strong style={{ color:T.groen, fontSize:13 }}>Continu vs. piek vermogen</strong>
+                <strong style={{ color:T.groen, fontSize:13 }}>Continue vs. piek vermogen</strong>
                 <p style={{ color:T.tekstZacht, fontSize:12, margin:"6px 0 0", lineHeight:1.7 }}>
-                  <strong style={{ color:T.groen }}>Continu vermogen</strong> is wat de omvormer langdurig levert — dit bepaalt het model.<br/>
+                  <strong style={{ color:T.groen }}>Continue vermogen</strong> is wat de omvormer langdurig levert, dit bepaalt het model.<br/>
                   <strong style={{ color:T.groen }}>Piek vermogen</strong> (motorstart koelkast e.d.) duurt slechts seconden. Victron heeft dit ruim ingebouwd.
                 </p>
               </div>
@@ -387,7 +387,7 @@ export default function App() {
               <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"20px", marginBottom:20 }}>
                 <div style={{ display:"flex", gap:16, flexWrap:"wrap", paddingBottom: continuW>0?18:0, marginBottom: continuW>0?18:0, borderBottom: continuW>0?`1px solid rgba(45,90,61,0.1)`:"none" }}>
                   <div style={{ flex:1, minWidth:130 }}>
-                    <div style={{ color:T.tekstZacht, fontSize:12, fontWeight:600, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:8 }}>Continu vermogen gelijktijdig</div>
+                    <div style={{ color:T.tekstZacht, fontSize:12, fontWeight:600, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:8 }}>Continue vermogen gelijktijdig</div>
                     <div style={{ color:T.brons, fontWeight:800, fontSize:42, letterSpacing:-2, lineHeight:1 }}>
                       {Math.round(continuW)}<span style={{ fontSize:22 }}>W</span>
                     </div>
@@ -397,7 +397,7 @@ export default function App() {
                   </div>
                   {continuW>0&&(
                     <div style={{ flex:1, minWidth:130, borderLeft:`1px solid rgba(45,90,61,0.12)`, paddingLeft:16 }}>
-                      <div style={{ color:T.tekstZacht, fontSize:12, fontWeight:600, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:8 }}>Continu limiet aanbevolen model</div>
+                      <div style={{ color:T.tekstZacht, fontSize:12, fontWeight:600, textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:8 }}>Continue limiet aanbevolen model</div>
                       <div style={{ color:T.groen, fontWeight:800, fontSize:42, letterSpacing:-2, lineHeight:1 }}>
                         {victron.continuW.toLocaleString()}<span style={{ fontSize:22 }}>W</span>
                       </div>
@@ -423,7 +423,7 @@ export default function App() {
                       <div style={{ color:T.creme, fontWeight:800, fontSize:22, letterSpacing:"-0.01em", marginBottom:12 }}>{victron.multiplus}</div>
                       <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
                         <span style={{ background:"rgba(240,237,228,0.15)", color:T.creme, fontSize:13, padding:"5px 12px", borderRadius:2, fontWeight:700 }}>
-                          {victron.continuW.toLocaleString()}W continu
+                          {victron.continuW.toLocaleString()}W continue
                         </span>
                         <span style={{ background:T.brons, color:T.creme, fontSize:13, padding:"5px 12px", borderRadius:2, fontWeight:700 }}>
                           {victron.va.toLocaleString()}VA
@@ -438,7 +438,7 @@ export default function App() {
                         <div style={{ color:T.groen, fontWeight:800, fontSize:16, marginBottom:10 }}>{groter.multiplus}</div>
                         <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
                           <span style={{ background:`rgba(45,90,61,0.1)`, color:T.groen, fontSize:12, padding:"4px 10px", borderRadius:2, fontWeight:700 }}>
-                            {groter.continuW.toLocaleString()}W continu
+                            {groter.continuW.toLocaleString()}W continue
                           </span>
                           <span style={{ background:`rgba(193,122,58,0.1)`, color:T.brons, fontSize:12, padding:"4px 10px", borderRadius:2, fontWeight:600 }}>
                             {groter.va.toLocaleString()}VA
@@ -474,9 +474,9 @@ export default function App() {
         {step===4&&!submitted&&(
           <div style={card}>
             <div style={sectionLabel}>Stap 4 — Jouw rapport</div>
-            <h2 style={{ ...cardTitle, color:T.groen }}>Ontvang jouw persoonlijk rapport</h2>
+            <h2 style={{ ...cardTitle, color:T.groen }}>Ontvang jouw persoonlijke rapport</h2>
             <p style={{ color:T.tekstZacht, fontSize:14, margin:"0 0 22px", lineHeight:1.6 }}>
-              We sturen je een compleet overzicht van je energieverbruik én omvormer advies gratis per mail.
+              We sturen je een compleet overzicht van je energieverbruik en omvormeradvies gratis per mail.
             </p>
 
             {/* Preview */}
@@ -484,10 +484,10 @@ export default function App() {
               {[
                 [null,"Volledig overzicht van al je apparaten"],
                 [null,`${Math.round(totalWh)} Wh/dag · ${totalWp} Wp`],
-                ...(continuW>0?[[null,`${Math.round(continuW)}W continu · ${victron.multiplus}`]]:[] ),
+                ...(continuW>0?[[null,`${Math.round(continuW)}W continue · ${victron.multiplus}`]]:[] ),
                 [null,`Minimaal ${Math.round(totalWh / 0.8 / 12.8)} Ah (12,8V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 12.8)} Ah`],
                 [null,`Minimaal ${Math.round(totalWh / 0.8 / 25.6)} Ah (25,6V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 25.6)} Ah`],
-                [null,"Directe link naar de pakket configurator"],
+                [null,"Directe link naar de pakketconfigurator"],
               ].map(([,text])=>(
                 <div key={text} style={{ display:"flex", gap:10, alignItems:"center", color:T.tekstZacht, fontSize:14 }}>
                   <span style={{ width:6, height:6, borderRadius:"50%", background:T.brons, flexShrink:0 }}/><span>{text}</span>
@@ -497,7 +497,7 @@ export default function App() {
 
             {/* Mini samenvatting */}
             <div style={{ display:"flex", gap:10, marginBottom:22, flexWrap:"wrap" }}>
-              {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],...(continuW>0?[[Math.round(continuW)+"W","continu"]]:[])]
+              {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],...(continuW>0?[[Math.round(continuW)+"W","continue"]]:[])]
                 .map(([v,l])=>(
                   <div key={l} style={{ flex:1, minWidth:70, background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"14px 10px", textAlign:"center" }}>
                     <div style={{ color:T.brons, fontWeight:800, fontSize:22 }}>{v}</div>
@@ -508,7 +508,7 @@ export default function App() {
 
             {/* Accu samenvatting */}
             <div style={{ marginBottom:22 }}>
-              <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:10 }}>Accu advies</div>
+              <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:10 }}>Accuadvies</div>
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:10 }}>
                 <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"12px 14px" }}>
                   <div style={{ fontSize:10, fontWeight:700, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:2 }}>12,8V Minimaal</div>
@@ -568,7 +568,7 @@ export default function App() {
             <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:20, marginBottom:20, textAlign:"left" }}>
               <div style={{ fontSize:11, fontWeight:700, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:14 }}>Jouw resultaten</div>
               <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:14 }}>
-                {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],...(continuW>0?[[Math.round(continuW)+"W","continu"],[victron.va+"VA","Victron"]]:[])]
+                {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],...(continuW>0?[[Math.round(continuW)+"W","continue"],[victron.va+"VA","Victron"]]:[])]
                   .map(([v,l])=>(
                     <div key={l} style={{ background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"12px 14px", textAlign:"center", flex:1, minWidth:70 }}>
                       <div style={{ color:T.brons, fontWeight:800, fontSize:18 }}>{v}</div>
@@ -577,7 +577,7 @@ export default function App() {
                   ))}
               </div>
               <p style={{ color:T.tekstZacht, fontSize:13, lineHeight:1.7, margin:0 }}>
-                In de mail vind je een link naar de <strong style={{ color:T.groen }}>pakket configurator</strong> waar je een compleet systeem samenstelt.
+                In de mail vind je een link naar de <strong style={{ color:T.groen }}>pakketconfigurator</strong> waar je een compleet systeem samenstelt.
               </p>
             </div>
 
@@ -585,7 +585,7 @@ export default function App() {
             <div style={{ background:T.groen, borderRadius:2, padding:"22px 24px", marginBottom:14, display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap" }}>
               <div style={{ flex:1, textAlign:"left" }}>
                 <div style={{ fontWeight:800, color:T.creme, fontSize:15, marginBottom:4 }}>Klaar voor een compleet systeem?</div>
-                <div style={{ color:`rgba(240,237,228,0.7)`, fontSize:13 }}>Ga direct naar de pakket configurator.</div>
+                <div style={{ color:`rgba(240,237,228,0.7)`, fontSize:13 }}>Ga direct naar de pakketconfigurator.</div>
               </div>
               <a href={CONFIGURATOR_URL} target="_blank" rel="noopener noreferrer"
                 style={{ background:T.brons, color:T.creme, border:"none", borderRadius:2, padding:"12px 22px", fontSize:14, fontWeight:700, cursor:"pointer", textDecoration:"none", whiteSpace:"nowrap", fontFamily:"'Manrope',sans-serif" }}>
