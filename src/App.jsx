@@ -192,7 +192,7 @@ export default function App() {
                       </div>
                       {calcWh(d)>0&&(
                         <span style={{ fontSize:12, color:T.brons, background:`rgba(193,122,58,0.1)`, padding:"4px 10px", borderRadius:2, display:"inline-block", fontWeight:700, letterSpacing:"0.04em" }}>
-                          {Math.round(calcWh(d))} Wh/dag · {Math.round(calcW(d))}W
+                          {Math.round(calcWh(d))} Wh/dag · {Math.round(calcW(d))}W{fmtHours(d.hours)?` · gebruik: ${fmtHours(d.hours)}/dag`:""}
                         </span>
                       )}
                     </div>
