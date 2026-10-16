@@ -188,14 +188,16 @@ export default function App() {
                           <input style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
                             min="0" max="24" step="0.25"
                             value={d.hours} onChange={e=>updateDevice(d.id,"hours",e.target.value)}/>
-                          {fmtHours(d.hours)&&<span style={{ fontSize:11, color:T.tekstZacht, paddingLeft:2 }}>{fmtHours(d.hours)}</span>}
+                          <span style={{ fontSize:11, lineHeight:"14px", minHeight:14, color:T.tekstZacht, paddingLeft:2 }}>{fmtHours(d.hours)||"\u00A0"}</span>
                         </div>
                       </div>
+                      <div style={{ minHeight:26 }}>
                       {calcWh(d)>0&&(
                         <span style={{ fontSize:12, color:T.brons, background:`rgba(193,122,58,0.1)`, padding:"4px 10px", borderRadius:2, display:"inline-block", fontWeight:700, letterSpacing:"0.04em" }}>
                           {Math.round(calcWh(d))} Wh/dag · {Math.round(calcW(d))}W{fmtHours(d.hours)?` · gebruik: ${fmtHours(d.hours)}/dag`:""}
                         </span>
                       )}
+                      </div>
                     </div>
                     {devices.length>1&&(
                       <button style={{ background:"none", border:"none", color:T.tekstZacht, cursor:"pointer", fontSize:15, padding:8, marginTop:8 }}
