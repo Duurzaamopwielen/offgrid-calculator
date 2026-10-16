@@ -464,7 +464,7 @@ export default function App() {
 
               <div style={{ display:"flex", gap:10 }}>
                 <button style={secondaryBtn} onClick={()=>setStep(2)}>← Energie resultaat</button>
-                <button style={primaryBtn} onClick={()=>setStep(4)}>Volledige rapportage bekijken</button>
+                <button style={primaryBtn} onClick={()=>setStep(4)}>Volledige rapportage ontvangen</button>
               </div>
             </div>
           </div>
