@@ -164,7 +164,7 @@ export default function App() {
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten gebruik jij?</h2>
               <p style={{ ...cardSub, marginBottom:8 }}>Voeg al je apparaten toe met het verbruik en de dagelijkse gebruiksduur.</p>
               <p style={{ ...cardSub, fontSize:12, marginTop:0, color:"rgba(96,120,88,0.8)" }}>
-                Uren per dag: gebruik de pijltjes of typ zelf een getal, bijvoorbeeld 0,1 voor 6 minuten.
+                Uren per dag: gebruik de pijltjes (stappen van 15 minuten) of typ zelf een getal, bijvoorbeeld 0,1 voor 6 minuten. In de balk onder het apparaat zie je direct de omgerekende tijd.
               </p>
 
               <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:12 }}>
