@@ -188,7 +188,7 @@ export default function App() {
                       </div>
                       <div style={{ ...inputStyle, display:"flex", alignItems:"center", fontWeight:700, letterSpacing:"0.04em",
                         ...(calcWh(d)>0
-                          ? { color:T.brons, background:`rgba(193,122,58,0.1)`, border:"1.5px solid rgba(193,122,58,0.25)" }
+                          ? { color:T.brons, background:T.groen, border:`1.5px solid ${T.groen}` }
                           : { color:`rgba(96,120,88,0.5)`, background:"rgba(45,90,61,0.04)", border:"1.5px solid rgba(45,90,61,0.1)", fontWeight:500 }) }}>
                         {calcWh(d)>0
                           ? `${Math.round(calcWh(d))} Wh/dag · ${Math.round(calcW(d))}W${fmtHours(d.hours)?` · gebruik: ${fmtHours(d.hours)}/dag`:""}`
