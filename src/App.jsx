@@ -47,7 +47,6 @@ const calcWh          = d  => { const h=parseFloat(d.hours)||0,v=parseFloat(d.va
 const fmtHours        = h  => { const hrs=parseFloat(h)||0; if(hrs<=0)return ""; const totalMin=Math.round(hrs*60); const u=Math.floor(totalMin/60),m=totalMin%60; if(u===0)return `${m} min`; if(m===0)return `${u} uur`; return `${u}u ${m}min`; };
 const calcW           = d  => { const v=parseFloat(d.value)||0,volt=parseFloat(d.voltage)||230; return d.unit==="W"?v:v*volt; };
 const calcWp          = wh => wh/(4*0.7);
-const panelCount      = wp => Math.ceil(wp/400);
 const newDevice       = () => ({ id:Date.now()+Math.random(), name:"", value:"", unit:"W", voltage:230, hours:"" });
 
 // ─── Google Fonts loader ─────────────────────────────────────────────────────
@@ -73,7 +72,6 @@ export default function App() {
 
   const totalWh  = devices.reduce((s,d)=>s+calcWh(d),0);
   const totalWp  = Math.round(calcWp(totalWh));
-  const panels   = panelCount(totalWp);
   const sys      = getSystem(totalWh);
   const continuW = checkedIds.reduce((s,id)=>{ const d=devices.find(d=>d.id===id); return d?s+calcW(d):s; },0);
   const victron  = getVictronModel(continuW);
@@ -225,8 +223,8 @@ export default function App() {
           <div>
 
             {/* Getallen */}
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:16 }}>
-              {[[Math.round(totalWh),"Wh per dag","Dagverbruik"],[totalWp,"Wp benodigd","Zonnepanelen"],[`~${panels}`,"panelen","à 400Wp"]].map(([val,unit,note])=>(
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:12, marginBottom:16 }}>
+              {[[Math.round(totalWh),"Wh per dag","Dagverbruik"],[totalWp,"Wp benodigd","Zonnepanelen"]].map(([val,unit,note])=>(
                 <div key={unit} style={{ background:T.groen, borderRadius:2, textAlign:"center", padding:"20px 12px", boxShadow:"0 2px 8px rgba(45,90,61,0.2)" }}>
                   <div style={{ fontSize:32, fontWeight:800, color:T.creme, letterSpacing:-1, lineHeight:1 }}>{val}</div>
                   <div style={{ fontSize:11, color:"rgba(240,237,228,0.75)", marginTop:6, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em" }}>{unit}</div>
@@ -483,7 +481,7 @@ export default function App() {
             <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"16px 18px", marginBottom:22, display:"flex", flexDirection:"column", gap:10 }}>
               {[
                 [null,"Volledig overzicht van al je apparaten"],
-                [null,`${Math.round(totalWh)} Wh/dag · ${totalWp} Wp · ~${panels} panelen`],
+                [null,`${Math.round(totalWh)} Wh/dag · ${totalWp} Wp`],
                 ...(continuW>0?[[null,`${Math.round(continuW)}W continu · ${victron.multiplus}`]]:[] ),
                 [null,`Minimaal ${Math.round(totalWh / 0.8 / 12.8)} Ah (12,8V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 12.8)} Ah`],
                 [null,`Minimaal ${Math.round(totalWh / 0.8 / 25.6)} Ah (25,6V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 25.6)} Ah`],
@@ -497,7 +495,7 @@ export default function App() {
 
             {/* Mini samenvatting */}
             <div style={{ display:"flex", gap:10, marginBottom:22, flexWrap:"wrap" }}>
-              {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],[`~${panels}`,"panelen"],...(continuW>0?[[Math.round(continuW)+"W","continu"]]:[])]
+              {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],...(continuW>0?[[Math.round(continuW)+"W","continu"]]:[])]
                 .map(([v,l])=>(
                   <div key={l} style={{ flex:1, minWidth:70, background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"14px 10px", textAlign:"center" }}>
                     <div style={{ color:T.brons, fontWeight:800, fontSize:22 }}>{v}</div>
@@ -568,7 +566,7 @@ export default function App() {
             <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:20, marginBottom:20, textAlign:"left" }}>
               <div style={{ fontSize:11, fontWeight:700, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:14 }}>Jouw resultaten</div>
               <div style={{ display:"flex", gap:10, flexWrap:"wrap", marginBottom:14 }}>
-                {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],[`~${panels}`,"panelen"],...(continuW>0?[[Math.round(continuW)+"W","continu"],[victron.va+"VA","Victron"]]:[])]
+                {[[Math.round(totalWh),"Wh/dag"],[totalWp,"Wp"],...(continuW>0?[[Math.round(continuW)+"W","continu"],[victron.va+"VA","Victron"]]:[])]
                   .map(([v,l])=>(
                     <div key={l} style={{ background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"12px 14px", textAlign:"center", flex:1, minWidth:70 }}>
                       <div style={{ color:T.brons, fontWeight:800, fontSize:18 }}>{v}</div>
