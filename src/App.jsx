@@ -21,10 +21,10 @@ const CONFIGURATOR_URL = "https://duurzaamopwielen.nl/collections/energie-pakket
 const VOLTAGE_OPTIONS  = [12, 24, 230];
 
 const SYSTEM_LABELS = [
-  { max: 500,  label: "Micro systeem",  icon: "🔋", desc: "Ideaal voor kamperen of kleine installaties" },
-  { max: 1500, label: "Klein systeem",  icon: "⚡", desc: "Geschikt voor een tiny house of caravan" },
-  { max: 4000, label: "Medium systeem", icon: "🏕️", desc: "Goed voor een volledig off-grid weekendverblijf" },
-  { max: 9999, label: "Groot systeem",  icon: "🏡", desc: "Volledig off-grid woning of professioneel gebruik" },
+  { max: 500,  label: "Micro systeem",  desc: "Ideaal voor kamperen of kleine installaties" },
+  { max: 1500, label: "Klein systeem",  desc: "Geschikt voor een tiny house of caravan" },
+  { max: 4000, label: "Medium systeem", desc: "Goed voor een volledig off-grid weekendverblijf" },
+  { max: 9999, label: "Groot systeem",  desc: "Volledig off-grid woning of professioneel gebruik" },
 ];
 
 const VICTRON_MODELS = [
@@ -33,10 +33,10 @@ const VICTRON_MODELS = [
   { va: 1200,  continuW: 1000,  multiplus: "MultiPlus 1200VA",     quattro: null,               desc: "Compacte off-grid setup, kleine koelkast of TV",                       tip: "Beschikbaar in 12V / 24V / 48V" },
   { va: 1600,  continuW: 1300,  multiplus: "MultiPlus 1600VA",     quattro: null,               desc: "Tiny house basis: koelkast, verlichting en elektronica tegelijk",       tip: "Beschikbaar in 12V / 24V / 48V" },
   { va: 2000,  continuW: 1600,  multiplus: "MultiPlus 2000VA",     quattro: null,               desc: "Comfortabele kleine off-grid installatie, meerdere apparaten",          tip: "Beschikbaar in 12V / 24V / 48V" },
-  { va: 3000,  continuW: 2400,  multiplus: "MultiPlus-II 3000VA",  quattro: "Quattro 3000VA",   desc: "Populair voor campers, tiny houses en kleine off-grid woningen",         tip: "Quattro heeft 2 AC-ingangen — handig bij generator" },
-  { va: 4000,  continuW: 3400,  multiplus: "MultiPlus-II 4000VA",  quattro: "Quattro 4000VA",   desc: "Krachtige off-grid setup voor grotere campers en tiny houses",           tip: "Quattro heeft 2 AC-ingangen — ideaal voor hybride systemen" },
-  { va: 5000,  continuW: 4000,  multiplus: "MultiPlus-II 5000VA",  quattro: "Quattro 5000VA",   desc: "Meest gekozen voor volledige off-grid woningen",                        tip: "Quattro heeft 2 AC-ingangen — ideaal voor hybride systemen" },
-  { va: 8000,  continuW: 6500,  multiplus: "MultiPlus-II 8000VA",  quattro: "Quattro 8000VA",   desc: "Zwaar gebruik: meerdere grote apparaten langdurig gelijktijdig",        tip: "MultiPlus-II alleen 48V — Quattro ook in 24V" },
+  { va: 3000,  continuW: 2400,  multiplus: "MultiPlus-II 3000VA",  quattro: "Quattro 3000VA",   desc: "Populair voor campers, tiny houses en kleine off-grid woningen",         tip: "Generator? Sluit die aan op de AC-ingang van de MultiPlus-II" },
+  { va: 4000,  continuW: 3400,  multiplus: "MultiPlus-II 4000VA",  quattro: "Quattro 4000VA",   desc: "Krachtige off-grid setup voor grotere campers en tiny houses",           tip: "Generator? Sluit die aan op de AC-ingang van de MultiPlus-II" },
+  { va: 5000,  continuW: 4000,  multiplus: "MultiPlus-II 5000VA",  quattro: "Quattro 5000VA",   desc: "Meest gekozen voor volledige off-grid woningen",                        tip: "Generator? Sluit die aan op de AC-ingang van de MultiPlus-II" },
+  { va: 8000,  continuW: 6500,  multiplus: "MultiPlus-II 8000VA",  quattro: "Quattro 8000VA",   desc: "Zwaar gebruik: meerdere grote apparaten langdurig gelijktijdig",        tip: "MultiPlus-II 8000VA is alleen beschikbaar in 48V" },
   { va: 10000, continuW: 8000,  multiplus: "MultiPlus-II 10000VA", quattro: "Quattro 10000VA",  desc: "Grote off-grid installaties en kleine bedrijven",                      tip: "Parallel schakelen mogelijk tot 6 units" },
   { va: 15000, continuW: 12000, multiplus: "MultiPlus-II 15000VA", quattro: "Quattro 15000VA",  desc: "Professioneel en industrieel gebruik",                                 tip: "Neem contact op voor advies bij dit vermogen" },
 ];
@@ -77,6 +77,7 @@ export default function App() {
   const sys      = getSystem(totalWh);
   const continuW = checkedIds.reduce((s,id)=>{ const d=devices.find(d=>d.id===id); return d?s+calcW(d):s; },0);
   const victron  = getVictronModel(continuW);
+  const groter   = VICTRON_MODELS[VICTRON_MODELS.indexOf(victron)+1];
 
   const addDevice    = ()       => setDevices(p=>[...p,newDevice()]);
   const removeDevice = id       => { setDevices(p=>p.filter(d=>d.id!==id)); setCheckedIds(p=>p.filter(i=>i!==id)); };
@@ -243,7 +244,7 @@ export default function App() {
               </p>
               {/* Zonnepaneel advies */}
               <div style={{ background:"rgba(193,122,58,0.12)", border:"1px solid rgba(193,122,58,0.3)", borderRadius:2, padding:"14px 16px" }}>
-                <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:8 }}>☀️ Zonnepaneel advies</div>
+                <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:8 }}>Zonnepaneel advies</div>
                 <p style={{ color:T.tekstZacht, fontSize:13, margin:0, lineHeight:1.75 }}>
                   Om zo lang mogelijk off-grid te blijven adviseren wij{" "}
                   <strong style={{ color:T.groen, fontSize:15, fontWeight:800 }}>{totalWp.toLocaleString()} Wp</strong>{" "}
@@ -318,7 +319,7 @@ export default function App() {
 
             {/* Omvormer CTA — centraal */}
             <div style={{ background:T.groen, borderRadius:2, padding:"28px 24px", marginBottom:14, textAlign:"center" }}>
-              <div style={{ fontWeight:800, color:T.creme, fontSize:16, marginBottom:6 }}>⚡ Bereken ook jouw Victron omvormer</div>
+              <div style={{ fontWeight:800, color:T.creme, fontSize:16, marginBottom:6 }}>Bereken ook jouw Victron omvormer</div>
               <div style={{ color:`rgba(240,237,228,0.7)`, fontSize:13, marginBottom:18 }}>Selecteer welke apparaten langdurig gelijktijdig aan staan en ontdek welke omvormer je nodig hebt</div>
               <button style={{ background:T.brons, color:T.creme, border:"none", borderRadius:2, padding:"13px 32px", fontSize:15, fontWeight:700, cursor:"pointer", fontFamily:"'Manrope',sans-serif" }}
                 onClick={handleToInverter}>
@@ -346,7 +347,7 @@ export default function App() {
 
               {/* Uitleg */}
               <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"13px 16px", marginBottom:20 }}>
-                <strong style={{ color:T.groen, fontSize:13 }}>💡 Continu vs. piek vermogen</strong>
+                <strong style={{ color:T.groen, fontSize:13 }}>Continu vs. piek vermogen</strong>
                 <p style={{ color:T.tekstZacht, fontSize:12, margin:"6px 0 0", lineHeight:1.7 }}>
                   <strong style={{ color:T.groen }}>Continu vermogen</strong> is wat de omvormer langdurig levert — dit bepaalt het model.<br/>
                   <strong style={{ color:T.groen }}>Piek vermogen</strong> (motorstart koelkast e.d.) duurt slechts seconden. Victron heeft dit ruim ingebouwd.
@@ -375,7 +376,7 @@ export default function App() {
                       </div>
                       <div style={{ textAlign:"right" }}>
                         <div style={{ color: checked ? T.brons : T.tekstZacht, fontWeight:800, fontSize:18 }}>{watt}W</div>
-                        <div style={{ color:`rgba(96,120,88,0.5)`, fontSize:11, marginTop:2 }}>{checked?"aan ⚡":"uit"}</div>
+                        <div style={{ color:`rgba(96,120,88,0.5)`, fontSize:11, marginTop:2 }}>{checked?"aan":"uit"}</div>
                       </div>
                     </div>
                   );
@@ -412,7 +413,7 @@ export default function App() {
                     <div style={{ fontSize:11, fontWeight:700, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:12 }}>Aanbevolen Victron model</div>
 
                     {/* MultiPlus kaart */}
-                    <div style={{ background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"16px", marginBottom: victron.quattro?10:12 }}>
+                    <div style={{ background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"16px", marginBottom:10 }}>
                       <div style={{ fontSize:10, fontWeight:800, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:8 }}>
                         {victron.va<=2000?"MultiPlus":"MultiPlus-II"}
                       </div>
@@ -427,30 +428,32 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Quattro kaart */}
-                    {victron.quattro&&(
+                    {/* Ruimer alternatief */}
+                    {groter&&(
                       <div style={{ background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"16px", marginBottom:12 }}>
-                        <div style={{ fontSize:10, fontWeight:800, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:8 }}>Quattro</div>
-                        <div style={{ color:T.groen, fontWeight:800, fontSize:16, marginBottom:10 }}>{victron.quattro}</div>
+                        <div style={{ fontSize:10, fontWeight:800, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:8 }}>Ruimer alternatief</div>
+                        <div style={{ color:T.groen, fontWeight:800, fontSize:16, marginBottom:10 }}>{groter.multiplus}</div>
                         <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
                           <span style={{ background:`rgba(45,90,61,0.1)`, color:T.groen, fontSize:12, padding:"4px 10px", borderRadius:2, fontWeight:700 }}>
-                            {victron.continuW.toLocaleString()}W continu
+                            {groter.continuW.toLocaleString()}W continu
                           </span>
                           <span style={{ background:`rgba(193,122,58,0.1)`, color:T.brons, fontSize:12, padding:"4px 10px", borderRadius:2, fontWeight:600 }}>
-                            {victron.va.toLocaleString()}VA
+                            {groter.va.toLocaleString()}VA
+                          </span>
+                          <span style={{ background:`rgba(45,90,61,0.06)`, color:T.tekstZacht, fontSize:12, padding:"4px 10px", borderRadius:2, fontWeight:600 }}>
+                            {(groter.continuW-Math.round(continuW)).toLocaleString()}W ruimte over
                           </span>
                         </div>
+                        <div style={{ color:T.tekstZacht, fontSize:12, marginTop:10, lineHeight:1.6 }}>Meer marge voor later uitbreiden of apparaten die je nu nog niet meetelt.</div>
                       </div>
                     )}
 
                     <div style={{ background:`rgba(193,122,58,0.06)`, border:`1px solid rgba(193,122,58,0.15)`, borderRadius:2, padding:"12px 14px" }}>
                       <div style={{ color:T.tekstZacht, fontSize:13, marginBottom:4 }}>{victron.desc}</div>
-                      <div style={{ color:`rgba(96,120,88,0.7)`, fontSize:12, fontStyle:"italic" }}>💡 {victron.tip}</div>
-                      {!victron.quattro&&(
-                        <div style={{ color:`rgba(96,120,88,0.5)`, fontSize:11, marginTop:6 }}>
-                          ℹ️ De Quattro begint bij 3000VA — voor kleinere systemen is de MultiPlus de juiste keuze.
-                        </div>
-                      )}
+                      <div style={{ color:`rgba(96,120,88,0.7)`, fontSize:12, fontStyle:"italic" }}>{victron.tip}</div>
+                      <div style={{ color:`rgba(96,120,88,0.7)`, fontSize:12, marginTop:8, lineHeight:1.6 }}>
+                        Gebruik je af en toe een generator op de ingang als backup? Dan is een MultiPlus voldoende. Staat er een permanente generator naast, wat vaak voorkomt bij boten? Dan adviseren we een Quattro, omdat deze 2 AC-ingangen heeft.
+                      </div>
                     </div>
                   </>
                 )}
@@ -458,7 +461,7 @@ export default function App() {
 
               <div style={{ display:"flex", gap:10 }}>
                 <button style={secondaryBtn} onClick={()=>setStep(2)}>← Energie resultaat</button>
-                <button style={primaryBtn} onClick={()=>setStep(4)}>📩 Rapport per mail</button>
+                <button style={primaryBtn} onClick={()=>setStep(4)}>Rapport per mail</button>
               </div>
             </div>
           </div>
@@ -476,15 +479,15 @@ export default function App() {
             {/* Preview */}
             <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"16px 18px", marginBottom:22, display:"flex", flexDirection:"column", gap:10 }}>
               {[
-                ["📊","Volledig overzicht van al je apparaten"],
-                ["☀️",`${Math.round(totalWh)} Wh/dag · ${totalWp} Wp · ~${panels} panelen`],
-                ...(continuW>0?[["⚡",`${Math.round(continuW)}W continu · ${victron.multiplus}${victron.quattro?" / "+victron.quattro:""}`]]:[] ),
-                ["🔋",`Minimaal ${Math.round(totalWh / 0.8 / 12.8)} Ah (12,8V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 12.8)} Ah`],
-                ["🔋",`Minimaal ${Math.round(totalWh / 0.8 / 25.6)} Ah (25,6V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 25.6)} Ah`],
-                ["🔧","Directe link naar de pakket configurator"],
-              ].map(([icon,text])=>(
+                [null,"Volledig overzicht van al je apparaten"],
+                [null,`${Math.round(totalWh)} Wh/dag · ${totalWp} Wp · ~${panels} panelen`],
+                ...(continuW>0?[[null,`${Math.round(continuW)}W continu · ${victron.multiplus}`]]:[] ),
+                [null,`Minimaal ${Math.round(totalWh / 0.8 / 12.8)} Ah (12,8V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 12.8)} Ah`],
+                [null,`Minimaal ${Math.round(totalWh / 0.8 / 25.6)} Ah (25,6V) · Aanbevolen ${Math.round(totalWh * 2 / 0.8 / 25.6)} Ah`],
+                [null,"Directe link naar de pakket configurator"],
+              ].map(([,text])=>(
                 <div key={text} style={{ display:"flex", gap:10, alignItems:"center", color:T.tekstZacht, fontSize:14 }}>
-                  <span style={{ fontSize:16 }}>{icon}</span><span>{text}</span>
+                  <span style={{ width:6, height:6, borderRadius:"50%", background:T.brons, flexShrink:0 }}/><span>{text}</span>
                 </div>
               ))}
             </div>
@@ -502,7 +505,7 @@ export default function App() {
 
             {/* Accu samenvatting */}
             <div style={{ marginBottom:22 }}>
-              <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:10 }}>🔋 Accu advies</div>
+              <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:10 }}>Accu advies</div>
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:10 }}>
                 <div style={{ background:`rgba(45,90,61,0.05)`, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"12px 14px" }}>
                   <div style={{ fontSize:10, fontWeight:700, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:2 }}>12,8V Minimaal</div>
@@ -538,7 +541,7 @@ export default function App() {
               <input style={inputStyle} type="email" placeholder="jan@voorbeeld.nl" value={email} onChange={e=>setEmail(e.target.value)}/>
             </div>
 
-            <p style={{ color:`rgba(96,120,88,0.6)`, fontSize:12, marginBottom:18 }}>🔒 Geen spam. Alleen je rapport + één follow-up met advies.</p>
+            <p style={{ color:`rgba(96,120,88,0.6)`, fontSize:12, marginBottom:18 }}>Je ontvangt je rapport en een follow-up met advies. Daarnaast voeg je jezelf toe aan onze mailinglijst, zodat we je op de hoogte houden van nieuws, tips en aanbiedingen. Afmelden kan op elk moment.</p>
 
             {error&&<p style={{ color:"#c0392b", fontSize:13, marginBottom:8 }}>{error}</p>}
 
@@ -552,7 +555,7 @@ export default function App() {
         {/* ════ Bevestiging ════ */}
         {step===4&&submitted&&(
           <div style={{ ...card, textAlign:"center" }}>
-            <div style={{ fontSize:56, marginBottom:12 }}>✅</div>
+            <div style={{ width:40, height:3, background:T.brons, margin:"0 auto 18px" }}/>
             <div style={sectionLabel}>Verstuurd!</div>
             <h2 style={{ ...cardTitle, color:T.groen }}>Rapport onderweg!</h2>
             <p style={{ color:T.tekstZacht, fontSize:14, lineHeight:1.7, marginBottom:24 }}>
@@ -578,7 +581,7 @@ export default function App() {
             {/* Configurator CTA */}
             <div style={{ background:T.groen, borderRadius:2, padding:"22px 24px", marginBottom:14, display:"flex", alignItems:"center", justifyContent:"space-between", gap:16, flexWrap:"wrap" }}>
               <div style={{ flex:1, textAlign:"left" }}>
-                <div style={{ fontWeight:800, color:T.creme, fontSize:15, marginBottom:4 }}>🔧 Klaar voor een compleet systeem?</div>
+                <div style={{ fontWeight:800, color:T.creme, fontSize:15, marginBottom:4 }}>Klaar voor een compleet systeem?</div>
                 <div style={{ color:`rgba(240,237,228,0.7)`, fontSize:13 }}>Ga direct naar de pakket configurator.</div>
               </div>
               <a href={CONFIGURATOR_URL} target="_blank" rel="noopener noreferrer"
