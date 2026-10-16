@@ -184,19 +184,17 @@ export default function App() {
                             {VOLTAGE_OPTIONS.map(v=><option key={v} value={v}>{v}V</option>)}
                           </select>
                         )}
-                        <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
-                          <input style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
+                        <input style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
                             min="0" max="24" step="0.25"
                             value={d.hours} onChange={e=>updateDevice(d.id,"hours",e.target.value)}/>
-                          <span style={{ fontSize:11, lineHeight:"14px", minHeight:14, color:T.tekstZacht, paddingLeft:2 }}>{fmtHours(d.hours)||"\u00A0"}</span>
-                        </div>
                       </div>
-                      <div style={{ minHeight:26 }}>
-                      {calcWh(d)>0&&(
-                        <span style={{ fontSize:12, color:T.brons, background:`rgba(193,122,58,0.1)`, padding:"4px 10px", borderRadius:2, display:"inline-block", fontWeight:700, letterSpacing:"0.04em" }}>
-                          {Math.round(calcWh(d))} Wh/dag · {Math.round(calcW(d))}W{fmtHours(d.hours)?` · gebruik: ${fmtHours(d.hours)}/dag`:""}
-                        </span>
-                      )}
+                      <div style={{ ...inputStyle, display:"flex", alignItems:"center", fontWeight:700, letterSpacing:"0.04em",
+                        ...(calcWh(d)>0
+                          ? { color:T.brons, background:`rgba(193,122,58,0.1)`, border:"1.5px solid rgba(193,122,58,0.25)" }
+                          : { color:`rgba(96,120,88,0.5)`, background:"rgba(45,90,61,0.04)", border:"1.5px solid rgba(45,90,61,0.1)", fontWeight:500 }) }}>
+                        {calcWh(d)>0
+                          ? `${Math.round(calcWh(d))} Wh/dag · ${Math.round(calcW(d))}W${fmtHours(d.hours)?` · gebruik: ${fmtHours(d.hours)}/dag`:""}`
+                          : "Wh/dag verschijnt hier"}
                       </div>
                     </div>
                     {devices.length>1&&(
@@ -614,8 +612,8 @@ const cardTitle   = { fontSize:22, fontWeight:800, margin:"0 0 8px", letterSpaci
 const cardSub     = { color:T.tekstZacht, fontSize:14, margin:"0 0 22px", lineHeight:1.6 };
 const sectionLabel= { fontSize:10, fontWeight:800, letterSpacing:"0.2em", textTransform:"uppercase", color:T.brons, marginBottom:8, display:"block" };
 const numBadge    = { width:28, height:28, borderRadius:"50%", background:`rgba(45,90,61,0.1)`, color:T.groen, display:"flex", alignItems:"center", justifyContent:"center", fontSize:12, fontWeight:800, flexShrink:0, marginTop:10 };
-const inputStyle  = { background:"#fff", border:`1.5px solid rgba(45,90,61,0.18)`, borderRadius:2, padding:"10px 13px", color:T.donker, fontSize:14, outline:"none", width:"100%", boxSizing:"border-box", fontFamily:"'Manrope',sans-serif" };
-const selectStyle = { background:"#fff", border:`1.5px solid rgba(45,90,61,0.18)`, borderRadius:2, padding:"10px 11px", color:T.donker, fontSize:14, outline:"none", cursor:"pointer", fontFamily:"'Manrope',sans-serif" };
+const inputStyle  = { background:"#fff", border:`1.5px solid rgba(45,90,61,0.18)`, borderRadius:2, padding:"10px 13px", color:T.donker, fontSize:14, outline:"none", width:"100%", boxSizing:"border-box", height:42, fontFamily:"'Manrope',sans-serif" };
+const selectStyle = { background:"#fff", border:`1.5px solid rgba(45,90,61,0.18)`, borderRadius:2, padding:"10px 11px", color:T.donker, fontSize:14, outline:"none", cursor:"pointer", height:42, boxSizing:"border-box", fontFamily:"'Manrope',sans-serif" };
 const addBtnStyle = { background:"none", border:`1.5px dashed rgba(45,90,61,0.2)`, borderRadius:2, padding:"10px 18px", color:T.tekstZacht, cursor:"pointer", fontSize:14, width:"100%", marginBottom:18, fontFamily:"'Manrope',sans-serif", fontWeight:500 };
 const primaryBtn  = { background:T.groen, color:T.creme, border:"none", borderRadius:2, padding:"13px 22px", fontSize:15, fontWeight:700, cursor:"pointer", width:"100%", marginTop:6, fontFamily:"'Manrope',sans-serif" };
 const secondaryBtn= { background:"none", border:`1.5px solid rgba(45,90,61,0.2)`, borderRadius:2, padding:"12px 18px", color:T.groen, fontSize:14, cursor:"pointer", fontFamily:"'Manrope',sans-serif", fontWeight:600 };
