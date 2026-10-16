@@ -412,17 +412,20 @@ export default function App() {
                   <>
                     <div style={{ fontSize:11, fontWeight:700, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:12 }}>Aanbevolen Victron model</div>
 
-                    {/* MultiPlus kaart */}
-                    <div style={{ background:T.creme, border:`1px solid rgba(45,90,61,0.12)`, borderRadius:2, padding:"16px", marginBottom:10 }}>
-                      <div style={{ fontSize:10, fontWeight:800, color:T.tekstZacht, textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:8 }}>
+                    {/* MultiPlus kaart = ons advies */}
+                    <div style={{ background:T.groen, border:`2px solid ${T.groen}`, borderRadius:2, padding:"20px", marginBottom:10, boxShadow:"0 4px 16px rgba(45,90,61,0.25)" }}>
+                      <div style={{ display:"inline-block", background:T.brons, color:T.creme, fontSize:10, fontWeight:800, letterSpacing:"0.16em", textTransform:"uppercase", padding:"4px 10px", borderRadius:2, marginBottom:12 }}>
+                        Ons advies
+                      </div>
+                      <div style={{ fontSize:10, fontWeight:800, color:"rgba(240,237,228,0.65)", textTransform:"uppercase", letterSpacing:"0.12em", marginBottom:4 }}>
                         {victron.va<=2000?"MultiPlus":"MultiPlus-II"}
                       </div>
-                      <div style={{ color:T.groen, fontWeight:800, fontSize:16, marginBottom:10 }}>{victron.multiplus}</div>
+                      <div style={{ color:T.creme, fontWeight:800, fontSize:22, letterSpacing:"-0.01em", marginBottom:12 }}>{victron.multiplus}</div>
                       <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-                        <span style={{ background:`rgba(45,90,61,0.1)`, color:T.groen, fontSize:12, padding:"4px 10px", borderRadius:2, fontWeight:700 }}>
+                        <span style={{ background:"rgba(240,237,228,0.15)", color:T.creme, fontSize:13, padding:"5px 12px", borderRadius:2, fontWeight:700 }}>
                           {victron.continuW.toLocaleString()}W continu
                         </span>
-                        <span style={{ background:`rgba(193,122,58,0.1)`, color:T.brons, fontSize:12, padding:"4px 10px", borderRadius:2, fontWeight:600 }}>
+                        <span style={{ background:T.brons, color:T.creme, fontSize:13, padding:"5px 12px", borderRadius:2, fontWeight:700 }}>
                           {victron.va.toLocaleString()}VA
                         </span>
                       </div>
