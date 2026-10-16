@@ -44,6 +44,7 @@ const VICTRON_MODELS = [
 const getVictronModel = w  => VICTRON_MODELS.find(m => m.continuW > w) || VICTRON_MODELS[VICTRON_MODELS.length - 1];
 const getSystem       = wh => SYSTEM_LABELS.find(s => wh <= s.max) || SYSTEM_LABELS[3];
 const calcWh          = d  => { const h=parseFloat(d.hours)||0,v=parseFloat(d.value)||0,volt=parseFloat(d.voltage)||230; return d.unit==="W"?v*h:v*volt*h; };
+const fmtHours        = h  => { const hrs=parseFloat(h)||0; if(hrs===0)return ""; const totalMin=Math.round(hrs*60); const u=Math.floor(totalMin/60),m=totalMin%60; if(u===0)return `${m} min`; if(m===0)return `${u} uur`; return `${u} uur ${m} min`; };
 const calcW           = d  => { const v=parseFloat(d.value)||0,volt=parseFloat(d.voltage)||230; return d.unit==="W"?v:v*volt; };
 const calcWp          = wh => wh/(4*0.7);
 const panelCount      = wp => Math.ceil(wp/400);
@@ -182,8 +183,12 @@ export default function App() {
                             {VOLTAGE_OPTIONS.map(v=><option key={v} value={v}>{v}V</option>)}
                           </select>
                         )}
-                        <input style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
-                          value={d.hours} onChange={e=>updateDevice(d.id,"hours",e.target.value)}/>
+                        <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
+                          <input style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
+                            min="0" max="24" step="0.25"
+                            value={d.hours} onChange={e=>updateDevice(d.id,"hours",e.target.value)}/>
+                          {fmtHours(d.hours)&&<span style={{ fontSize:11, color:T.tekstZacht, paddingLeft:2 }}>{fmtHours(d.hours)}</span>}
+                        </div>
                       </div>
                       {calcWh(d)>0&&(
                         <span style={{ fontSize:12, color:T.brons, background:`rgba(193,122,58,0.1)`, padding:"4px 10px", borderRadius:2, display:"inline-block", fontWeight:700, letterSpacing:"0.04em" }}>
