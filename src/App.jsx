@@ -246,7 +246,7 @@ export default function App() {
                 <p style={{ color:T.tekstZacht, fontSize:13, margin:0, lineHeight:1.75 }}>
                   Om zo lang mogelijk off-grid te blijven adviseren wij minimaal{" "}
                   <strong style={{ color:T.groen, fontSize:15, fontWeight:800 }}>{totalWp.toLocaleString()} Wp</strong>{" "}
-                  aan zonnepanelen te installeren. Met dit vermogen laad je bij gemiddeld 4 zonuren per dag
+                  aan zonnepanelen te installeren om je dagverbruik aan te vullen. Met dit vermogen laad je bij gemiddeld 4 zonuren per dag
                   je volledige dagverbruik weer op, zodat je de volgende dag opnieuw volledig zelfvoorzienend bent.
                   Houd er rekening mee dat bewolkte dagen minder opbrengst geven en je accu dan als buffer dient.
                 </p>
