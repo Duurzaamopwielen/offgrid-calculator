@@ -87,7 +87,6 @@ export default function App() {
     setError(""); setStep(2);
   };
   const handleToInverter = () => {
-    if (checkedIds.length===0) setCheckedIds(devices.map(d=>d.id));
     setStep(3);
   };
   const handleEmailSubmit = () => {
@@ -343,7 +342,7 @@ export default function App() {
               <div style={sectionLabel}>Stap 3 — Omvormer advies</div>
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten staan <em style={{ fontStyle:"normal", color:T.brons }}>langdurig</em> gelijktijdig aan?</h2>
               <p style={{ color:T.tekstZacht, fontSize:14, margin:"0 0 20px", lineHeight:1.6 }}>
-                De som van het continu vermogen bepaalt welke Victron omvormer je nodig hebt.
+                Vink de apparaten aan die maximaal tegelijk aan staan. Zo krijg je een goed beeld van wat de omvormer continu moet kunnen leveren, en dat bepaalt welke Victron omvormer je nodig hebt.
               </p>
 
               {/* Uitleg */}
