@@ -244,7 +244,7 @@ export default function App() {
               <div style={{ background:"rgba(193,122,58,0.12)", border:"1px solid rgba(193,122,58,0.3)", borderRadius:2, padding:"14px 16px" }}>
                 <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:8 }}>Zonnepaneel advies</div>
                 <p style={{ color:T.tekstZacht, fontSize:13, margin:0, lineHeight:1.75 }}>
-                  Om zo lang mogelijk off-grid te blijven adviseren wij{" "}
+                  Om zo lang mogelijk off-grid te blijven adviseren wij minimaal{" "}
                   <strong style={{ color:T.groen, fontSize:15, fontWeight:800 }}>{totalWp.toLocaleString()} Wp</strong>{" "}
                   aan zonnepanelen te installeren. Met dit vermogen laad je bij gemiddeld 4 zonuren per dag
                   je volledige dagverbruik weer op, zodat je de volgende dag opnieuw volledig zelfvoorzienend bent.
