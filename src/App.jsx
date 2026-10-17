@@ -99,7 +99,7 @@ export default function App() {
 
   return (
     <div style={{ ...font, minHeight:"100vh", background:"#E4E0D6", color:T.donker }}>
-      <style>{`@media (max-width:480px){ .dow-lbl{ display:none; } .dow-row{ flex-wrap:nowrap !important; } .dow-row .dow-val{ flex:1 1 0 !important; min-width:0 !important; width:0 !important; padding-left:9px !important; padding-right:9px !important; } .dow-row select{ padding-left:8px !important; padding-right:4px !important; } .dow-row .dow-hours{ width:86px !important; flex:0 0 auto; padding-left:9px !important; padding-right:6px !important; } .dow-badge{ font-size:12.5px !important; letter-spacing:0 !important; padding-left:10px !important; padding-right:10px !important; } } @media (max-width:359px){ .dow-row{ flex-wrap:wrap !important; } .dow-row .dow-val{ flex:1 1 70px !important; min-width:70px !important; } }`}</style>
+      <style>{`@media (max-width:480px){ .dow-lbl{ display:none; } .dow-row{ flex-wrap:nowrap !important; gap:5px !important; } .dow-row .dow-val{ flex:1 1 0 !important; min-width:0 !important; width:0 !important; padding-left:9px !important; padding-right:9px !important; } .dow-row select{ padding-left:5px !important; padding-right:0 !important; font-size:13px !important; } .dow-row .dow-hours{ width:60px !important; flex:0 0 auto; padding-left:7px !important; padding-right:3px !important; -moz-appearance:textfield; } .dow-row .dow-hours::-webkit-inner-spin-button, .dow-row .dow-hours::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; } .dow-row .dow-hours::placeholder{ font-size:11px; } .dow-badge{ font-size:12.5px !important; letter-spacing:0 !important; padding-left:10px !important; padding-right:10px !important; } } @media (max-width:359px){ .dow-row{ flex-wrap:wrap !important; } .dow-row .dow-val{ flex:1 1 70px !important; min-width:70px !important; } }`}</style>
 
       {/* ── Logo bar ── */}
       <div style={{ background:T.creme, borderBottom:`1px solid rgba(45,90,61,0.12)`, padding:"18px 32px", display:"flex", alignItems:"center", justifyContent:"center" }}>
@@ -174,7 +174,7 @@ export default function App() {
                     <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:7 }}>
                       <input style={inputStyle} placeholder="Naam apparaat (bijv. Koelkast 12V)"
                         value={d.name} onChange={e=>updateDevice(d.id,"name",e.target.value)}/>
-                      <div className={d.unit==="W"?"dow-row":""} style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
+                      <div className="dow-row" style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
                         <input className="dow-val" style={{...inputStyle,flex:1,minWidth:70}} placeholder="Verbruik" type="number"
                           value={d.value} onChange={e=>updateDevice(d.id,"value",e.target.value)}/>
                         <select style={selectStyle} value={d.unit} onChange={e=>updateDevice(d.id,"unit",e.target.value)}>
