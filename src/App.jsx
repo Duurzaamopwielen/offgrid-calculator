@@ -343,7 +343,7 @@ export default function App() {
               <div style={sectionLabel}>Stap 3 — Omvormeradvies</div>
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten staan <em style={{ fontStyle:"normal", color:T.brons }}>langdurig</em> gelijktijdig aan?</h2>
               <p style={{ color:T.tekstZacht, fontSize:14, margin:"0 0 20px", lineHeight:1.6 }}>
-                Vink alle apparaten aan die tegelijk aan kunnen staan en kijk daarbij vooral naar het maximale vermogen. Zo zie je hoeveel de omvormer continue moet kunnen leveren wanneer er het meeste wordt gevraagd.
+                Vink alle apparaten aan die tegelijk aan kunnen staan en kijk daarbij vooral naar het maximale vermogen. Zo zie je hoeveel de omvormer continue moet kunnen leveren wanneer er het meeste wordt gevraagd. Dat bepaalt welke Victron omvormer je nodig hebt.
               </p>
 
               {/* Uitleg */}
