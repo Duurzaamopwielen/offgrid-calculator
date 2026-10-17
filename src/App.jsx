@@ -99,7 +99,7 @@ export default function App() {
 
   return (
     <div style={{ ...font, minHeight:"100vh", background:"#E4E0D6", color:T.donker }}>
-      <style>{`@media (max-width:480px){ .dow-lbl{ display:none; } .dow-badge{ font-size:12.5px !important; letter-spacing:0 !important; padding-left:10px !important; padding-right:10px !important; } }`}</style>
+      <style>{`@media (max-width:480px){ .dow-lbl{ display:none; } .dow-row{ flex-wrap:nowrap !important; } .dow-row .dow-val{ flex:1 1 0 !important; min-width:0 !important; width:0 !important; padding-left:9px !important; padding-right:9px !important; } .dow-row select{ padding-left:8px !important; padding-right:4px !important; } .dow-row .dow-hours{ width:86px !important; flex:0 0 auto; padding-left:9px !important; padding-right:6px !important; } .dow-badge{ font-size:12.5px !important; letter-spacing:0 !important; padding-left:10px !important; padding-right:10px !important; } } @media (max-width:359px){ .dow-row{ flex-wrap:wrap !important; } .dow-row .dow-val{ flex:1 1 70px !important; min-width:70px !important; } }`}</style>
 
       {/* ── Logo bar ── */}
       <div style={{ background:T.creme, borderBottom:`1px solid rgba(45,90,61,0.12)`, padding:"18px 32px", display:"flex", alignItems:"center", justifyContent:"center" }}>
@@ -171,11 +171,11 @@ export default function App() {
                 {devices.map((d,idx)=>(
                   <div key={d.id} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
                     <div style={numBadge}>{idx+1}</div>
-                    <div style={{ flex:1, display:"flex", flexDirection:"column", gap:7 }}>
+                    <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:7 }}>
                       <input style={inputStyle} placeholder="Naam apparaat (bijv. Koelkast 12V)"
                         value={d.name} onChange={e=>updateDevice(d.id,"name",e.target.value)}/>
-                      <div style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
-                        <input style={{...inputStyle,flex:1,minWidth:70}} placeholder="Verbruik" type="number"
+                      <div className={d.unit==="W"?"dow-row":""} style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
+                        <input className="dow-val" style={{...inputStyle,flex:1,minWidth:70}} placeholder="Verbruik" type="number"
                           value={d.value} onChange={e=>updateDevice(d.id,"value",e.target.value)}/>
                         <select style={selectStyle} value={d.unit} onChange={e=>updateDevice(d.id,"unit",e.target.value)}>
                           <option>W</option><option>A</option>
@@ -185,7 +185,7 @@ export default function App() {
                             {VOLTAGE_OPTIONS.map(v=><option key={v} value={v}>{v}V</option>)}
                           </select>
                         )}
-                        <input style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
+                        <input className="dow-hours" style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
                             min="0" max="24" step="0.25"
                             value={d.hours} onChange={e=>updateDevice(d.id,"hours",e.target.value)}/>
                       </div>
