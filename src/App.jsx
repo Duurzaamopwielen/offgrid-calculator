@@ -321,7 +321,7 @@ export default function App() {
               {showCalc&&(
                 <p style={{ color:T.tekstZacht, fontSize:13, margin:"12px 0 0", lineHeight:1.7 }}>
                   {Math.round(totalWh)} Wh ÷ (4 zonuren × 70% rendement) = <strong style={{ color:T.groen }}>{totalWp} Wp</strong><br/>
-                  <span style={{ fontSize:12, color:`rgba(96,120,88,0.7)` }}>Gebaseerd op 4 zonuren/dag (NL gemiddeld) en 70% systeemrendement</span>
+                  <span style={{ fontSize:12, color:`rgba(96,120,88,0.7)` }}>Gebaseerd op 4 zonuren op een gemiddelde zonnige dag (ongeveer 200 dagen per jaar) en 70% systeemrendement</span>
                 </p>
               )}
             </div>
