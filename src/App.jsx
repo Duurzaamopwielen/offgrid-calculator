@@ -69,6 +69,7 @@ export default function App() {
   const [email,      setEmail]      = useState("");
   const [submitted,  setSubmitted]  = useState(false);
   const [error,      setError]      = useState("");
+  const [showHelp,   setShowHelp]   = useState(false);
 
   const totalWh  = devices.reduce((s,d)=>s+calcWh(d),0);
   const totalWp  = Math.round(calcWp(totalWh));
@@ -163,12 +164,31 @@ export default function App() {
               <div style={sectionLabel}>Stap 1 — Jouw apparaten</div>
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten gebruik jij?</h2>
               <p style={{ ...cardSub, marginBottom:8 }}>Voeg al je apparaten toe met het verbruik en de dagelijkse gebruiksduur.</p>
-              <p style={{ ...cardSub, fontSize:12, marginTop:0, marginBottom:6, color:"rgba(96,120,88,0.8)" }}>
-                Verbruik: staat er een vermogen in watt (W) op je apparaat, kies dan W en voer de wattage in. Staat er alleen een stroomsterkte in ampère (A), kies dan A, selecteer de spanning (V) en voer de A-waarde in.
-              </p>
-              <p style={{ ...cardSub, fontSize:12, marginTop:0, color:"rgba(96,120,88,0.8)" }}>
-                Uren per dag: gebruik de pijltjes (stappen van 15 minuten) of typ zelf een getal, bijvoorbeeld 0,1 voor 6 minuten. In de balk onder het apparaat zie je direct de omgerekende tijd.
-              </p>
+              <div style={{ display:"flex", gap:10, alignItems:"flex-start", marginBottom: showHelp?10:20 }}>
+                <p style={{ ...cardSub, fontSize:12, margin:0, flex:1, color:"rgba(96,120,88,0.8)" }}>
+                  Uren per dag: gebruik de pijltjes (stappen van 15 minuten) of typ zelf een getal, bijvoorbeeld 0,1 voor 6 minuten. In de balk onder het apparaat zie je direct de omgerekende tijd.
+                </p>
+                <button type="button" onClick={()=>setShowHelp(v=>!v)} aria-label="Hulp bij het invullen" aria-expanded={showHelp}
+                  style={{ flexShrink:0, width:24, height:24, borderRadius:"50%", border:`1.5px solid ${T.groen}`, background: showHelp?T.groen:"transparent", color: showHelp?T.creme:T.groen, fontSize:13, fontWeight:800, fontFamily:"'Manrope',sans-serif", lineHeight:1, cursor:"pointer", padding:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  i
+                </button>
+              </div>
+              {showHelp&&(
+                <div style={{ background:"rgba(45,90,61,0.04)", border:"1px solid rgba(45,90,61,0.12)", borderRadius:2, padding:"16px 18px", marginBottom:20, fontSize:13, lineHeight:1.7, color:T.tekstZacht }}>
+                  <p style={{ margin:"0 0 12px" }}>
+                    <strong style={{ color:T.groen }}>Watt (W)</strong><br/>
+                    Het vermogen van een apparaat staat meestal op het typeplaatje of in de handleiding, bijvoorbeeld 60 W. Kies dan W en voer dat getal in.
+                  </p>
+                  <p style={{ margin:"0 0 12px" }}>
+                    <strong style={{ color:T.groen }}>Alleen ampère (A)?</strong><br/>
+                    Staat er alleen een stroomsterkte op, bijvoorbeeld 5 A? Kies dan A, kies de spanning (V) waarop het apparaat werkt (12V, 24V of 230V, zie het typeplaatje) en voer de A-waarde in. De calculator rekent het zelf om naar watt.
+                  </p>
+                  <p style={{ margin:0 }}>
+                    <strong style={{ color:T.groen }}>Uren per dag</strong><br/>
+                    Hoe lang het apparaat per dag aan staat, bijvoorbeeld 8 uur. Gebruik de pijltjes (stappen van 15 minuten) of typ zelf een getal: 0,5 is een half uur, 0,25 is 15 minuten en 0,1 is 6 minuten. In de balk onder het apparaat zie je direct de omgerekende tijd.
+                  </p>
+                </div>
+              )}
 
               <div style={{ display:"flex", flexDirection:"column", gap:12, marginBottom:12 }}>
                 {devices.map((d,idx)=>(
