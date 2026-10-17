@@ -163,6 +163,9 @@ export default function App() {
               <div style={sectionLabel}>Stap 1 — Jouw apparaten</div>
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten gebruik jij?</h2>
               <p style={{ ...cardSub, marginBottom:8 }}>Voeg al je apparaten toe met het verbruik en de dagelijkse gebruiksduur.</p>
+              <p style={{ ...cardSub, fontSize:12, marginTop:0, marginBottom:6, color:"rgba(96,120,88,0.8)" }}>
+                Verbruik: staat er een vermogen in watt (W) op je apparaat, kies dan W en voer de wattage in. Staat er alleen een stroomsterkte in ampère (A), kies dan A, selecteer de spanning (V) en voer de A-waarde in.
+              </p>
               <p style={{ ...cardSub, fontSize:12, marginTop:0, color:"rgba(96,120,88,0.8)" }}>
                 Uren per dag: gebruik de pijltjes (stappen van 15 minuten) of typ zelf een getal, bijvoorbeeld 0,1 voor 6 minuten. In de balk onder het apparaat zie je direct de omgerekende tijd.
               </p>
