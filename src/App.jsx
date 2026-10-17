@@ -195,7 +195,7 @@ export default function App() {
                   <div key={d.id} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
                     <div style={numBadge}>{idx+1}</div>
                     <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:7 }}>
-                      <input style={inputStyle} placeholder="Naam apparaat (bijv. Koelkast 12V)"
+                      <input style={inputStyle} placeholder="Naam apparaat (bijv. Koffieapparaat)"
                         value={d.name} onChange={e=>updateDevice(d.id,"name",e.target.value)}/>
                       <div className="dow-row" style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
                         <input className="dow-val" style={{...inputStyle,flex:1,minWidth:70}} placeholder="Verbruik" type="number"
