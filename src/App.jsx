@@ -70,6 +70,7 @@ export default function App() {
   const [submitted,  setSubmitted]  = useState(false);
   const [error,      setError]      = useState("");
   const [showHelp,   setShowHelp]   = useState(false);
+  const [showCalc,   setShowCalc]   = useState(false);
 
   const totalWh  = devices.reduce((s,d)=>s+calcWh(d),0);
   const totalWp  = Math.round(calcWp(totalWh));
@@ -163,7 +164,7 @@ export default function App() {
             <div style={card}>
               <div style={sectionLabel}>Stap 1 — Jouw apparaten</div>
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten gebruik jij?</h2>
-              <p style={{ ...cardSub, marginBottom:8 }}>Voeg al je apparaten toe met het verbruik en de dagelijkse gebruiksduur.</p>
+              <p style={{ ...cardSub, marginBottom:8 }}>Voeg al je apparaten toe met het verbruik en de dagelijkse gebruiksduur. Vul alles zo nauwkeurig mogelijk in. Je advies is zo goed als de gegevens die je invult.</p>
               <div style={{ display:"flex", gap:10, alignItems:"flex-start", marginBottom: showHelp?10:20 }}>
                 <p style={{ ...cardSub, fontSize:12, margin:0, flex:1, color:"rgba(96,120,88,0.8)" }}>
                   Uren per dag: gebruik de pijltjes (stappen van 15 minuten) of typ zelf een getal, bijvoorbeeld 0,1 voor 6 minuten. In de balk onder het apparaat zie je direct de omgerekende tijd.
@@ -250,7 +251,7 @@ export default function App() {
 
             {/* Getallen */}
             <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:12, marginBottom:16 }}>
-              {[[Math.round(totalWh),"Wh per dag","Dagverbruik"],[totalWp,"Wp benodigd","Zonnepanelen"]].map(([val,unit,note])=>(
+              {[[Math.round(totalWh),"Wh per dag",`${(totalWh/1000).toFixed(1).replace(".",",")} kWh per dag`],[totalWp,"Wp benodigd","Zonnepanelen"]].map(([val,unit,note])=>(
                 <div key={unit} style={{ background:T.groen, borderRadius:2, textAlign:"center", padding:"20px 12px", boxShadow:"0 2px 8px rgba(45,90,61,0.2)" }}>
                   <div style={{ fontSize:32, fontWeight:800, color:T.creme, letterSpacing:-1, lineHeight:1 }}>{val}</div>
                   <div style={{ fontSize:11, color:"rgba(240,237,228,0.75)", marginTop:6, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em" }}>{unit}</div>
@@ -261,13 +262,13 @@ export default function App() {
 
             {/* Uitleg + Advies */}
             <div style={{ ...card, background:"rgba(45,90,61,0.04)", marginBottom:16 }}>
-              <div style={sectionLabel}>Berekening</div>
+              <div style={sectionLabel}>Wat betekent dit?</div>
               <p style={{ color:T.tekstZacht, fontSize:13, margin:"0 0 16px", lineHeight:1.7 }}>
-                {Math.round(totalWh)} Wh ÷ (4 zonuren × 70% rendement) = <strong style={{ color:T.groen }}>{totalWp} Wp</strong><br/>
-                <span style={{ fontSize:12, color:`rgba(96,120,88,0.7)` }}>Gebaseerd op 4 zonuren/dag (NL gemiddeld) en 70% systeemrendement</span>
+                <strong style={{ color:T.groen }}>Wh</strong> is hoeveel stroom je per dag verbruikt. <strong style={{ color:T.groen }}>Wp</strong> is hoeveel vermogen je zonnepanelen samen moeten hebben.
+                Jouw verbruik is ongeveer <strong style={{ color:T.groen }}>{(totalWh/1000).toFixed(1).replace(".",",")} kWh per dag</strong>, net als op de energiemeter thuis.
               </p>
               {/* Zonnepaneel advies */}
-              <div style={{ background:"rgba(193,122,58,0.12)", border:"1px solid rgba(193,122,58,0.3)", borderRadius:2, padding:"14px 16px" }}>
+              <div style={{ background:"rgba(193,122,58,0.12)", border:"1px solid rgba(193,122,58,0.3)", borderRadius:2, padding:"14px 16px", marginBottom:12 }}>
                 <div style={{ fontSize:10, fontWeight:800, letterSpacing:"0.18em", textTransform:"uppercase", color:T.brons, marginBottom:8 }}>Zonnepaneeladvies</div>
                 <p style={{ color:T.tekstZacht, fontSize:13, margin:0, lineHeight:1.75 }}>
                   Om zo lang mogelijk off-grid te blijven adviseren wij minimaal{" "}
@@ -277,6 +278,21 @@ export default function App() {
                   Houd er rekening mee dat bewolkte dagen minder opbrengst geven en je accu dan als buffer dient.
                 </p>
               </div>
+              {/* Winter */}
+              <div style={{ background:"rgba(45,90,61,0.05)", border:"1px solid rgba(45,90,61,0.15)", borderRadius:2, padding:"12px 16px", marginBottom:12, color:T.tekstZacht, fontSize:13, lineHeight:1.7 }}>
+                <strong style={{ color:T.groen }}>Let op in de winter.</strong> De berekening gaat uit van gemiddeld 4 zonuren per dag. In de winter is dat vaak maar 1 uur. Reken dan op extra zonnepanelen, een generator of walstroom.
+              </div>
+              {/* Hoe rekenen we dit */}
+              <button type="button" onClick={()=>setShowCalc(v=>!v)} aria-expanded={showCalc}
+                style={{ width:"100%", display:"flex", justifyContent:"space-between", alignItems:"center", background:"none", border:"1px solid rgba(45,90,61,0.15)", borderRadius:2, padding:"12px 16px", cursor:"pointer", color:T.groen, fontFamily:"'Manrope',sans-serif", fontSize:13, fontWeight:600 }}>
+                <span>Hoe rekenen we dit?</span><span style={{ fontSize:16, lineHeight:1 }}>{showCalc?"−":"+"}</span>
+              </button>
+              {showCalc&&(
+                <p style={{ color:T.tekstZacht, fontSize:13, margin:"12px 0 0", lineHeight:1.7 }}>
+                  {Math.round(totalWh)} Wh ÷ (4 zonuren × 70% rendement) = <strong style={{ color:T.groen }}>{totalWp} Wp</strong><br/>
+                  <span style={{ fontSize:12, color:`rgba(96,120,88,0.7)` }}>Gebaseerd op 4 zonuren/dag (NL gemiddeld) en 70% systeemrendement</span>
+                </p>
+              )}
             </div>
 
             {/* Accuadvies */}
@@ -287,6 +303,11 @@ export default function App() {
                 Zo voorkom je een lege accu en verleng je de levensduur van je accu aanzienlijk.
                 Onderstaande capaciteiten zijn berekend op basis van 80% bruikbare capaciteit van een lithium accu.
               </p>
+
+              <div style={{ background:"rgba(45,90,61,0.05)", border:"1px solid rgba(45,90,61,0.12)", borderRadius:2, padding:"12px 16px", marginBottom:16, color:T.tekstZacht, fontSize:13, lineHeight:1.7 }}>
+                <strong style={{ color:T.groen }}>Welk systeem past bij mij?</strong><br/>
+                12V past bij de meeste campers, caravans en kleine boten. 24V past bij grotere systemen met meer vermogen.
+              </div>
 
               {/* 12,8V blok */}
               <div style={{ marginBottom:12 }}>
