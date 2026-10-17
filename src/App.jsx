@@ -281,7 +281,7 @@ export default function App() {
 
             {/* Getallen */}
             <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:12, marginBottom:16 }}>
-              {[[Math.round(totalWh),"Wh per dag",`${(totalWh/1000).toFixed(1).replace(".",",")} kWh per dag`],[totalWp,"Wp benodigd","Zonnepanelen"]].map(([val,unit,note])=>(
+              {[[Math.round(totalWh),"Wh per dag",`${(totalWh/1000).toFixed(2).replace(".",",")} kWh per dag`],[totalWp,"Wp benodigd","Zonnepanelen"]].map(([val,unit,note])=>(
                 <div key={unit} style={{ background:T.groen, borderRadius:2, textAlign:"center", padding:"20px 12px", boxShadow:"0 2px 8px rgba(45,90,61,0.2)" }}>
                   <div style={{ fontSize:32, fontWeight:800, color:T.creme, letterSpacing:-1, lineHeight:1 }}>{val}</div>
                   <div style={{ fontSize:11, color:"rgba(240,237,228,0.75)", marginTop:6, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em" }}>{unit}</div>
@@ -295,7 +295,7 @@ export default function App() {
               <div style={sectionLabel}>Wat betekent dit?</div>
               <p style={{ color:T.tekstZacht, fontSize:13, margin:"0 0 16px", lineHeight:1.7 }}>
                 <strong style={{ color:T.groen }}>Wh</strong> is hoeveel stroom je per dag verbruikt. <strong style={{ color:T.groen }}>Wp</strong> is hoeveel vermogen je zonnepanelen samen moeten hebben.
-                Jouw verbruik is ongeveer <strong style={{ color:T.groen }}>{(totalWh/1000).toFixed(1).replace(".",",")} kWh per dag</strong>, net als op de energiemeter thuis.
+                Jouw verbruik is ongeveer <strong style={{ color:T.groen }}>{(totalWh/1000).toFixed(2).replace(".",",")} kWh per dag</strong>, net als op de energiemeter thuis.
               </p>
               {/* Zonnepaneel advies */}
               <div style={{ background:"rgba(193,122,58,0.12)", border:"1px solid rgba(193,122,58,0.3)", borderRadius:2, padding:"14px 16px", marginBottom:12 }}>
