@@ -310,7 +310,7 @@ export default function App() {
               </div>
               {/* Winter */}
               <div style={{ background:"rgba(45,90,61,0.05)", border:"1px solid rgba(45,90,61,0.15)", borderRadius:2, padding:"12px 16px", marginBottom:12, color:T.tekstZacht, fontSize:13, lineHeight:1.7 }}>
-                <strong style={{ color:T.groen }}>Let op in de winter.</strong> De berekening gaat uit van gemiddeld 4 zonuren per dag. In de winter is dat vaak maar 1 uur. Reken dan op extra zonnepanelen, een generator of walstroom.
+                <strong style={{ color:T.groen }}>Let op in de winter.</strong> De berekening gaat uit van gemiddeld 4 zonuren per dag. Dat hangt af van waar je bent: in Nederland is het in de winter vaak maar 1 uur, terwijl je in Zuid-Europa, bijvoorbeeld Spanje, ook in de winter regelmatig 4 zonuren haalt. Verblijf je in het noorden, reken dan op extra zonnepanelen, een generator of walstroom.
               </div>
               {/* Hoe rekenen we dit */}
               <button type="button" onClick={()=>setShowCalc(v=>!v)} aria-expanded={showCalc}
