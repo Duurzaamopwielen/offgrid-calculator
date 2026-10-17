@@ -71,6 +71,10 @@ export default function App() {
   const [error,      setError]      = useState("");
   const [showHelp,   setShowHelp]   = useState(false);
   const [showCalc,   setShowCalc]   = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [formErrors,  setFormErrors]  = useState({});
+  const [consent,     setConsent]     = useState(false);
+  const [hp,          setHp]          = useState("");
 
   const totalWh  = devices.reduce((s,d)=>s+calcWh(d),0);
   const totalWp  = Math.round(calcWp(totalWh));
@@ -81,21 +85,43 @@ export default function App() {
 
   const addDevice    = ()       => setDevices(p=>[...p,newDevice()]);
   const removeDevice = id       => { setDevices(p=>p.filter(d=>d.id!==id)); setCheckedIds(p=>p.filter(i=>i!==id)); };
-  const updateDevice = (id,f,v) => setDevices(p=>p.map(d=>d.id===id?{...d,[f]:v}:d));
+  const updateDevice = (id,f,v) => {
+    setDevices(p=>p.map(d=>d.id===id?{...d,[f]:v}:d));
+    setFieldErrors(e=>{ if(!e[id]) return e; const n={...e}; delete n[id]; return n; });
+  };
   const toggleCheck  = id       => setCheckedIds(p=>p.includes(id)?p.filter(i=>i!==id):[...p,id]);
 
   const handleCalculate = () => {
-    if (devices.some(d=>!d.name||!d.value||!d.hours)) { setError("Vul alle apparaten volledig in."); return; }
+    const errs = {};
+    devices.forEach(d=>{
+      const e = {};
+      const v = parseFloat(d.value), h = parseFloat(d.hours);
+      if (!d.name.trim()) e.name = "Vul de naam van het apparaat in.";
+      if (!(v>0)) e.value = "Vul een verbruik in groter dan 0.";
+      else if ((d.unit==="W" && v>30000) || (d.unit==="A" && v>500)) e.value = "Dit lijkt niet te kloppen. Controleer het getal.";
+      if (!(h>0)) e.hours = "Vul in hoeveel uur per dag het apparaat aan staat.";
+      else if (h>24) e.hours = "Een dag heeft maar 24 uur.";
+      if (Object.keys(e).length) errs[d.id] = e;
+    });
+    setFieldErrors(errs);
+    if (Object.keys(errs).length) { setError("Controleer de rood omlijnde velden."); return; }
     setError(""); setStep(2);
   };
   const handleToInverter = () => {
     setStep(3);
   };
   const handleEmailSubmit = () => {
-    if (!name||!email) { setError("Vul je naam en e-mailadres in."); return; }
-    setError(""); setSubmitted(true);
+    const fe = {};
+    if (name.trim().length<2) fe.name = "Vul je naam in.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) fe.email = "Vul een geldig e-mailadres in.";
+    if (!consent) fe.consent = "Vink het vakje aan om je rapport te ontvangen.";
+    setFormErrors(fe);
+    if (Object.keys(fe).length) return;
+    setError("");
+    if (hp) { setSubmitted(true); return; } // verborgen veld ingevuld: bot, niets versturen
+    setSubmitted(true);
   };
-  const reset = () => { setStep(1); setDevices([newDevice()]); setCheckedIds([]); setName(""); setEmail(""); setSubmitted(false); setError(""); };
+  const reset = () => { setStep(1); setDevices([newDevice()]); setCheckedIds([]); setName(""); setEmail(""); setSubmitted(false); setError(""); setFieldErrors({}); setFormErrors({}); setConsent(false); setHp(""); };
 
   const font = { fontFamily:"'Manrope', sans-serif" };
 
@@ -196,10 +222,10 @@ export default function App() {
                   <div key={d.id} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
                     <div style={numBadge}>{idx+1}</div>
                     <div style={{ flex:1, minWidth:0, display:"flex", flexDirection:"column", gap:7 }}>
-                      <input style={inputStyle} placeholder="Naam apparaat (bijv. Koffieapparaat)"
+                      <input style={{...inputStyle,...(fieldErrors[d.id]?.name?{borderColor:"#c0392b"}:{})}} placeholder="Naam apparaat (bijv. Koffieapparaat)"
                         value={d.name} onChange={e=>updateDevice(d.id,"name",e.target.value)}/>
                       <div className="dow-row" style={{ display:"flex", gap:7, flexWrap:"wrap" }}>
-                        <input className="dow-val" style={{...inputStyle,flex:1,minWidth:70}} placeholder="Verbruik" type="number"
+                        <input className="dow-val" style={{...inputStyle,flex:1,minWidth:70,...(fieldErrors[d.id]?.value?{borderColor:"#c0392b"}:{})}} placeholder="Verbruik" type="number"
                           value={d.value} onChange={e=>updateDevice(d.id,"value",e.target.value)}/>
                         <select style={selectStyle} value={d.unit} onChange={e=>updateDevice(d.id,"unit",e.target.value)}>
                           <option>W</option><option>A</option>
@@ -209,10 +235,13 @@ export default function App() {
                             {VOLTAGE_OPTIONS.map(v=><option key={v} value={v}>{v}V</option>)}
                           </select>
                         )}
-                        <input className="dow-hours" style={{...inputStyle,width:95}} placeholder="Uren/dag" type="number"
+                        <input className="dow-hours" style={{...inputStyle,width:95,...(fieldErrors[d.id]?.hours?{borderColor:"#c0392b"}:{})}} placeholder="Uren/dag" type="number"
                             min="0" max="24" step="0.25"
                             value={d.hours} onChange={e=>updateDevice(d.id,"hours",e.target.value)}/>
                       </div>
+                      {fieldErrors[d.id]&&Object.values(fieldErrors[d.id]).map(m=>(
+                        <div key={m} style={{ color:"#c0392b", fontSize:12, lineHeight:1.4 }}>{m}</div>
+                      ))}
                       <div className="dow-badge" style={{ ...inputStyle, display:"flex", alignItems:"center", fontWeight:700, letterSpacing:"0.04em",
                         ...(calcWh(d)>0
                           ? { color:T.brons, background:"rgba(45,90,61,0.04)", border:"1.5px solid rgba(45,90,61,0.1)" }
@@ -582,14 +611,28 @@ export default function App() {
 
             <div style={{ marginBottom:14 }}>
               <label style={{ display:"block", color:T.groen, fontSize:13, fontWeight:600, marginBottom:6 }}>Jouw naam</label>
-              <input style={inputStyle} placeholder="Jan de Vries" value={name} onChange={e=>setName(e.target.value)}/>
+              <input style={{...inputStyle,...(formErrors.name?{borderColor:"#c0392b"}:{})}} placeholder="Jan de Vries" value={name} onChange={e=>{setName(e.target.value); setFormErrors(f=>({...f,name:undefined}));}}/>
+              {formErrors.name&&<div style={{ color:"#c0392b", fontSize:12, marginTop:4 }}>{formErrors.name}</div>}
             </div>
             <div style={{ marginBottom:14 }}>
               <label style={{ display:"block", color:T.groen, fontSize:13, fontWeight:600, marginBottom:6 }}>E-mailadres</label>
-              <input style={inputStyle} type="email" placeholder="jan@voorbeeld.nl" value={email} onChange={e=>setEmail(e.target.value)}/>
+              <input style={{...inputStyle,...(formErrors.email?{borderColor:"#c0392b"}:{})}} type="email" placeholder="jan@voorbeeld.nl" value={email} onChange={e=>{setEmail(e.target.value); setFormErrors(f=>({...f,email:undefined}));}}/>
+              {formErrors.email&&<div style={{ color:"#c0392b", fontSize:12, marginTop:4 }}>{formErrors.email}</div>}
             </div>
 
-            <p style={{ color:`rgba(96,120,88,0.6)`, fontSize:12, marginBottom:18 }}>Je ontvangt je rapport en een follow-up met advies. Daarnaast voeg je jezelf toe aan onze mailinglijst, zodat we je op de hoogte houden van nieuws, tips en aanbiedingen. Afmelden kan op elk moment.</p>
+            {/* Verborgen veld tegen bots: echte bezoekers zien dit niet */}
+            <div aria-hidden="true" style={{ position:"absolute", left:"-9999px", width:1, height:1, overflow:"hidden" }}>
+              <label>Laat dit veld leeg<input type="text" name="website" tabIndex={-1} autoComplete="off" value={hp} onChange={e=>setHp(e.target.value)}/></label>
+            </div>
+
+            <label style={{ display:"flex", gap:12, alignItems:"flex-start", cursor:"pointer", marginBottom: formErrors.consent?4:18 }}>
+              <input type="checkbox" checked={consent} onChange={e=>{setConsent(e.target.checked); setFormErrors(f=>({...f,consent:undefined}));}}
+                style={{ width:20, height:20, flexShrink:0, marginTop:1, accentColor:T.groen, cursor:"pointer", padding:0 }}/>
+              <span style={{ color:T.tekstZacht, fontSize:13, lineHeight:1.6 }}>
+                Ja, ik ontvang graag mijn rapport en een follow-up met advies. Ik word ook toegevoegd aan de mailinglijst met tips, nieuws en aanbiedingen van Duurzaam op Wielen. Afmelden kan op elk moment.
+              </span>
+            </label>
+            {formErrors.consent&&<div style={{ color:"#c0392b", fontSize:12, marginBottom:14 }}>{formErrors.consent}</div>}
 
             {error&&<p style={{ color:"#c0392b", fontSize:13, marginBottom:8 }}>{error}</p>}
 
