@@ -176,12 +176,12 @@ export default function App() {
               {showHelp&&(
                 <div style={{ background:"rgba(45,90,61,0.04)", border:"1px solid rgba(45,90,61,0.12)", borderRadius:2, padding:"16px 18px", marginBottom:20, fontSize:13, lineHeight:1.7, color:T.tekstZacht }}>
                   <p style={{ margin:"0 0 12px" }}>
-                    <strong style={{ color:T.groen }}>Watt (W)</strong><br/>
-                    Het vermogen van een apparaat staat meestal op het typeplaatje of in de handleiding, bijvoorbeeld 60 W. Kies dan W en voer dat getal in.
+                    <strong style={{ color:T.groen }}>Verbruik in watt (W)</strong><br/>
+                    Het vermogen van een apparaat staat meestal op het typeplaatje of in de handleiding, bijvoorbeeld 60 W. Kies dan W en voer dat getal in bij Verbruik.
                   </p>
                   <p style={{ margin:"0 0 12px" }}>
                     <strong style={{ color:T.groen }}>Alleen ampère (A)?</strong><br/>
-                    Staat er alleen een stroomsterkte op, bijvoorbeeld 5 A? Kies dan A, kies de spanning (V) waarop het apparaat werkt (12V, 24V of 230V, zie het typeplaatje) en voer de A-waarde in. De calculator rekent het zelf om naar watt.
+                    Staat er alleen een stroomsterkte op, bijvoorbeeld 5 A? Kies dan A, kies de spanning (V) waarop het apparaat werkt (12V, 24V of 230V, zie het typeplaatje) en voer de A-waarde in bij Verbruik. De calculator rekent het zelf om naar watt.
                   </p>
                   <p style={{ margin:0 }}>
                     <strong style={{ color:T.groen }}>Uren per dag</strong><br/>
