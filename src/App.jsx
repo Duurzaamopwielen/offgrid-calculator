@@ -99,6 +99,7 @@ export default function App() {
 
   return (
     <div style={{ ...font, minHeight:"100vh", background:"#E4E0D6", color:T.donker }}>
+      <style>{`@media (max-width:480px){ .dow-lbl{ display:none; } .dow-badge{ font-size:12.5px !important; letter-spacing:0 !important; padding-left:10px !important; padding-right:10px !important; } }`}</style>
 
       {/* ── Logo bar ── */}
       <div style={{ background:T.creme, borderBottom:`1px solid rgba(45,90,61,0.12)`, padding:"18px 32px", display:"flex", alignItems:"center", justifyContent:"center" }}>
@@ -188,12 +189,12 @@ export default function App() {
                             min="0" max="24" step="0.25"
                             value={d.hours} onChange={e=>updateDevice(d.id,"hours",e.target.value)}/>
                       </div>
-                      <div style={{ ...inputStyle, display:"flex", alignItems:"center", fontWeight:700, letterSpacing:"0.04em",
+                      <div className="dow-badge" style={{ ...inputStyle, display:"flex", alignItems:"center", fontWeight:700, letterSpacing:"0.04em",
                         ...(calcWh(d)>0
                           ? { color:T.brons, background:"rgba(45,90,61,0.04)", border:"1.5px solid rgba(45,90,61,0.1)" }
                           : { color:`rgba(96,120,88,0.5)`, background:"rgba(45,90,61,0.04)", border:"1.5px solid rgba(45,90,61,0.1)", fontWeight:500 }) }}>
                         {calcWh(d)>0
-                          ? `${Math.round(calcWh(d))} Wh/dag · ${Math.round(calcW(d))}W${fmtHours(d.hours)?` · gebruik: ${fmtHours(d.hours)}/dag`:""}`
+                          ? <span>{Math.round(calcWh(d))} Wh/dag · {Math.round(calcW(d))}W{fmtHours(d.hours)?<>{" · "}<span className="dow-lbl">gebruik: </span>{fmtHours(d.hours)}/dag</>:""}</span>
                           : "Wh/dag verschijnt hier"}
                       </div>
                     </div>
