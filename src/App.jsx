@@ -190,7 +190,8 @@ export default function App() {
             <div style={card}>
               <div style={sectionLabel}>Stap 1 — Jouw apparaten</div>
               <h2 style={{ ...cardTitle, color:T.groen }}>Welke apparaten gebruik jij?</h2>
-              <p style={{ ...cardSub, marginBottom:8 }}>Voeg al je apparaten toe met het verbruik en de dagelijkse gebruiksduur. Vul alles zo nauwkeurig mogelijk in. Je advies is zo goed als de gegevens die je invult.</p>
+              <p style={{ ...cardSub, marginBottom:4 }}>Voeg al je apparaten toe met het verbruik en de dagelijkse gebruiksduur.</p>
+              <p style={{ ...cardSub, marginBottom:12 }}>Vul alles zo nauwkeurig mogelijk in. Je advies is zo goed als de gegevens die je invult.</p>
               <div style={{ display:"flex", gap:10, alignItems:"flex-start", marginBottom: showHelp?10:20 }}>
                 <p style={{ ...cardSub, fontSize:12, margin:0, flex:1, color:"rgba(96,120,88,0.8)" }}>
                   Uren per dag: gebruik de pijltjes (stappen van 15 minuten) of typ zelf een getal, bijvoorbeeld 0,1 voor 6 minuten. In de balk onder het apparaat zie je direct de omgerekende tijd.
