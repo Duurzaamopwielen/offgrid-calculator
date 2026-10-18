@@ -4,59 +4,55 @@ const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY;
 const FROM_EMAIL      = "rapport@duurzaamopwielen.nl";
 const SHOP_URL        = "https://duurzaamopwielen.nl";
 
-const buildEmail = ({ name, totalWh, totalWp, panels, continuW, victron, devices, shopUrls }) => {
+const LOGO_URL = "https://offgrid-calculator.duurzaamopwielen.nl/logo.png";
+
+// Huisstijl
+const GROEN = "#2D5A3D";
+const BRONS = "#C17A3A";
+const CREME = "#F0EDE4";
+const PAGINA = "#E4E0D6";
+const TEKST = "#1d2a21";
+const ZACHT = "#607858";
+const LIJN = "#d9d4c6";
+
+const nl = (n) => Math.round(n).toLocaleString("nl-NL");
+const kwh = (wh) => (wh / 1000).toFixed(2).replace(".", ",");
+
+const buildEmail = ({ name, totalWh, totalWp, continuW, victron, groter, devices, shopUrls }) => {
   const firstName = name.split(" ")[0];
 
-  const deviceRows = devices.map(d => `
+  const deviceRows = (devices || []).map(d => `
     <tr>
-      <td style="padding:8px 0;color:#cbd5e1;font-size:14px;border-bottom:1px solid #1e293b;">${d.name}</td>
-      <td style="padding:8px 0;color:#f59e0b;font-size:14px;font-weight:600;text-align:right;border-bottom:1px solid #1e293b;">${Math.round(d.wh)} Wh</td>
+      <td style="padding:9px 0;color:${TEKST};font-size:14px;border-bottom:1px solid ${LIJN};">${d.name}</td>
+      <td style="padding:9px 0;color:${GROEN};font-size:14px;font-weight:700;text-align:right;border-bottom:1px solid ${LIJN};">${nl(d.wh)} Wh</td>
     </tr>
   `).join("");
 
-  const omvormerUrl = shopUrls?.[victron.multiplus] || SHOP_URL;
-  const quattroUrl  = victron.quattro ? (shopUrls?.[victron.quattro] || SHOP_URL) : null;
+  const omvormerKaart = (titel, model, url, label) => `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+      <tr>
+        <td style="background:${label === "advies" ? GROEN : "#ffffff"};border:1px solid ${label === "advies" ? GROEN : LIJN};border-radius:10px;padding:18px 20px;">
+          <p style="color:${label === "advies" ? "#cfe0d4" : ZACHT};font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;">${titel}</p>
+          <p style="color:${label === "advies" ? "#ffffff" : GROEN};font-size:18px;font-weight:700;margin:0 0 6px;">${model.multiplus}</p>
+          <p style="color:${label === "advies" ? "#cfe0d4" : ZACHT};font-size:13px;margin:0;">
+            ${nl(model.continuW)} W continue, ${nl(model.va)} VA
+          </p>
+          <a href="${url}" style="display:inline-block;margin-top:14px;background:${label === "advies" ? BRONS : GROEN};color:#ffffff;text-decoration:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;">
+            ${model.multiplus} bekijken
+          </a>
+        </td>
+      </tr>
+    </table>`;
 
-  const omvormerBlok = continuW > 0 ? `
-    <div style="margin:28px 0;">
-      <p style="color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:0 0 12px;">Aanbevolen omvormer</p>
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="background:#0f172a;border-radius:12px;padding:18px 20px;border:1px solid #334155;">
-            <p style="color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;">
-              ${victron.va <= 2000 ? "MultiPlus" : "MultiPlus-II"}
-            </p>
-            <p style="color:#f59e0b;font-size:18px;font-weight:700;margin:0 0 10px;">${victron.multiplus}</p>
-            <span style="background:rgba(76,175,98,0.15);color:#4caf62;font-size:12px;padding:4px 10px;border-radius:6px;font-weight:700;">
-              ${victron.continuW.toLocaleString()}W continu
-            </span>
-            <span style="background:rgba(100,116,139,0.15);color:#94a3b8;font-size:12px;padding:4px 10px;border-radius:6px;margin-left:6px;">
-              ${victron.va.toLocaleString()}VA
-            </span>
-            <br/>
-            <a href="${omvormerUrl}" style="display:inline-block;margin-top:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a;text-decoration:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;">
-              🛒 ${victron.multiplus} bekijken →
-            </a>
-          </td>
-        </tr>
-      </table>
-      ${quattroUrl ? `
-      <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;">
-        <tr>
-          <td style="background:#0f172a;border-radius:12px;padding:18px 20px;border:1px solid #334155;">
-            <p style="color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;">Quattro</p>
-            <p style="color:#f59e0b;font-size:18px;font-weight:700;margin:0 0 10px;">${victron.quattro}</p>
-            <span style="background:rgba(76,175,98,0.15);color:#4caf62;font-size:12px;padding:4px 10px;border-radius:6px;font-weight:700;">
-              ${victron.continuW.toLocaleString()}W continu
-            </span>
-            <br/>
-            <a href="${quattroUrl}" style="display:inline-block;margin-top:14px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a;text-decoration:none;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;">
-              🛒 ${victron.quattro} bekijken →
-            </a>
-          </td>
-        </tr>
-      </table>` : ""}
-    </div>
+  const omvormerBlok = continuW > 0 && victron ? `
+    <p style="color:${ZACHT};font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:28px 0 0;">Aanbevolen omvormer</p>
+    ${omvormerKaart("Ons advies", victron, shopUrls?.[victron.multiplus] || SHOP_URL, "advies")}
+    ${groter ? omvormerKaart("Ruimer alternatief", groter, shopUrls?.[groter.multiplus] || SHOP_URL, "alt") : ""}
+    <p style="color:${ZACHT};font-size:13px;line-height:1.6;margin:14px 0 0;">
+      Gebruik je af en toe een generator op de ingang als backup? Dan is een MultiPlus voldoende.
+      Staat er een permanente generator naast, wat vaak voorkomt bij boten? Dan adviseren we een Quattro,
+      omdat deze 2 AC-ingangen heeft.
+    </p>
   ` : "";
 
   return `<!DOCTYPE html>
@@ -66,51 +62,42 @@ const buildEmail = ({ name, totalWh, totalWp, panels, continuW, victron, devices
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Jouw off-grid rapport</title>
 </head>
-<body style="margin:0;padding:0;background:#0f172a;font-family:'Segoe UI',system-ui,sans-serif;">
+<body style="margin:0;padding:0;background:${PAGINA};font-family:Manrope,'Segoe UI',Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
       <td align="center" style="padding:32px 16px;">
         <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
           <tr>
-            <td style="background:#1e293b;border-radius:20px 20px 0 0;padding:28px 32px;border-bottom:1px solid #334155;text-align:center;">
-              <img src="https://duurzaamopwielen.nl/cdn/shop/files/Logo_Duurzaamopwielen_PNG.png?v=1681938634"
-                alt="Duurzaam op Wielen" height="44"
-                style="filter:brightness(0) invert(1);max-width:200px;"/>
+            <td style="background:#ffffff;border-radius:12px 12px 0 0;padding:24px 32px;text-align:center;border-bottom:3px solid ${BRONS};">
+              <img src="${LOGO_URL}" alt="Duurzaam op Wielen" width="260"
+                style="display:block;margin:0 auto;width:260px;max-width:100%;height:auto;border:0;"/>
             </td>
           </tr>
 
           <tr>
-            <td style="background:#1e293b;padding:32px 32px 0;">
-              <h1 style="color:#f1f5f9;font-size:22px;font-weight:700;margin:0 0 8px;">
-                Hoi ${firstName}, jouw rapport is klaar! ⚡
-              </h1>
-              <p style="color:#94a3b8;font-size:15px;line-height:1.7;margin:0 0 28px;">
+            <td style="background:${CREME};padding:32px 32px 0;">
+              <h1 style="color:${GROEN};font-size:22px;font-weight:700;margin:0 0 8px;">Hoi ${firstName}, jouw rapport is klaar</h1>
+              <p style="color:${TEKST};font-size:15px;line-height:1.7;margin:0 0 24px;">
                 Hieronder vind je jouw volledige off-grid berekening.
-                Bewaar deze mail — je hebt hem nodig als je een systeem gaat samenstellen.
+                Bewaar deze mail, je hebt hem nodig als je een systeem gaat samenstellen.
               </p>
             </td>
           </tr>
 
           <tr>
-            <td style="background:#1e293b;padding:0 32px;">
-              <table width="100%" cellpadding="0" cellspacing="0"
-                style="background:#0f172a;border-radius:14px;overflow:hidden;border:1px solid #334155;">
+            <td style="background:${CREME};padding:0 32px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid ${LIJN};border-radius:10px;">
                 <tr>
-                  <td width="33%" style="padding:20px 10px;text-align:center;border-right:1px solid #1e293b;">
-                    <div style="font-size:32px;font-weight:900;color:#f59e0b;">${Math.round(totalWh)}</div>
-                    <div style="font-size:11px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Wh per dag</div>
-                    <div style="font-size:11px;color:#475569;margin-top:3px;">Totaal verbruik</div>
+                  <td width="50%" style="padding:20px 12px;text-align:center;border-right:1px solid ${LIJN};">
+                    <div style="font-size:30px;font-weight:800;color:${BRONS};">${nl(totalWh)}</div>
+                    <div style="font-size:11px;color:${ZACHT};margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Wh per dag</div>
+                    <div style="font-size:12px;color:${ZACHT};margin-top:3px;">${kwh(totalWh)} kWh per dag</div>
                   </td>
-                  <td width="33%" style="padding:20px 10px;text-align:center;border-right:1px solid #1e293b;">
-                    <div style="font-size:32px;font-weight:900;color:#f59e0b;">${totalWp}</div>
-                    <div style="font-size:11px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Wp nodig</div>
-                    <div style="font-size:11px;color:#475569;margin-top:3px;">Zonnepanelen</div>
-                  </td>
-                  <td width="33%" style="padding:20px 10px;text-align:center;">
-                    <div style="font-size:32px;font-weight:900;color:#f59e0b;">~${panels}</div>
-                    <div style="font-size:11px;color:#64748b;margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Panelen</div>
-                    <div style="font-size:11px;color:#475569;margin-top:3px;">à 400Wp</div>
+                  <td width="50%" style="padding:20px 12px;text-align:center;">
+                    <div style="font-size:30px;font-weight:800;color:${BRONS};">${nl(totalWp)}</div>
+                    <div style="font-size:11px;color:${ZACHT};margin-top:4px;text-transform:uppercase;letter-spacing:1px;">Wp benodigd</div>
+                    <div style="font-size:12px;color:${ZACHT};margin-top:3px;">aan zonnepanelen</div>
                   </td>
                 </tr>
               </table>
@@ -118,27 +105,33 @@ const buildEmail = ({ name, totalWh, totalWp, panels, continuW, victron, devices
           </tr>
 
           <tr>
-            <td style="background:#1e293b;padding:16px 32px 0;">
-              <div style="background:#0f172a;border-radius:10px;padding:14px 16px;border-left:3px solid #f59e0b;">
-                <p style="color:#94a3b8;font-size:13px;margin:0;line-height:1.6;">
-                  <strong style="color:#f1f5f9;">Hoe berekend?</strong><br/>
-                  ${Math.round(totalWh)} Wh / (4 zonuren x 70% rendement) =
-                  <strong style="color:#f59e0b;">${totalWp} Wp</strong><br/>
-                  <span style="color:#64748b;font-size:12px;">Gebaseerd op 4 zonuren/dag (NL) en 70% systeemrendement</span>
+            <td style="background:${CREME};padding:16px 32px 0;">
+              <div style="background:#ffffff;border-radius:8px;padding:14px 16px;border-left:3px solid ${BRONS};">
+                <p style="color:${TEKST};font-size:13px;margin:0;line-height:1.6;">
+                  <strong style="color:${GROEN};">Hoe rekenen we dit?</strong><br/>
+                  ${nl(totalWh)} Wh / (4 zonuren x 70% rendement) = <strong style="color:${BRONS};">${nl(totalWp)} Wp</strong><br/>
+                  <span style="color:${ZACHT};font-size:12px;">Gebaseerd op 4 zonuren op een gemiddelde zonnige dag (ongeveer 200 dagen per jaar) en 70% systeemrendement.</span>
                 </p>
               </div>
+              <p style="color:${ZACHT};font-size:13px;line-height:1.6;margin:14px 0 0;">
+                <strong style="color:${GROEN};">Let op in de winter.</strong>
+                Wat de zon in de winter echt oplevert, hangt af van waar je bent. In Nederland is het vaak maar 1 uur per dag,
+                in het zuiden van Spanje kan het ook in de winter nog 3 tot 4 uur zijn. Bij weinig zon kun je extra zonnepanelen
+                plaatsen, als er ruimte is op je dak. Is die ruimte er niet, houd er dan rekening mee dat je een generator nodig hebt
+                of afhankelijk bent van walstroom.
+              </p>
             </td>
           </tr>
 
           <tr>
-            <td style="background:#1e293b;padding:0 32px;">
+            <td style="background:${CREME};padding:0 32px;">
               ${omvormerBlok}
             </td>
           </tr>
 
           <tr>
-            <td style="background:#1e293b;padding:0 32px 28px;">
-              <p style="color:#64748b;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px;">Jouw apparaten</p>
+            <td style="background:${CREME};padding:28px 32px 28px;">
+              <p style="color:${ZACHT};font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px;">Jouw apparaten</p>
               <table width="100%" cellpadding="0" cellspacing="0">
                 ${deviceRows}
               </table>
@@ -146,18 +139,15 @@ const buildEmail = ({ name, totalWh, totalWp, panels, continuW, victron, devices
           </tr>
 
           <tr>
-            <td style="background:#1e293b;padding:0 32px 32px;">
-              <table width="100%" cellpadding="0" cellspacing="0"
-                style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:14px;">
+            <td style="background:${CREME};padding:0 32px 32px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background:${GROEN};border-radius:10px;">
                 <tr>
                   <td style="padding:22px 24px;">
-                    <p style="color:#f1f5f9;font-size:15px;font-weight:700;margin:0 0 6px;">
-                      Klaar voor een compleet systeem?
-                    </p>
-                    <p style="color:#94a3b8;font-size:13px;margin:0 0 16px;line-height:1.6;">
+                    <p style="color:#ffffff;font-size:15px;font-weight:700;margin:0 0 6px;">Klaar voor een compleet systeem?</p>
+                    <p style="color:#cfe0d4;font-size:13px;margin:0 0 16px;line-height:1.6;">
                       Bekijk onze complete off-grid pakketten.
                     </p>
-                    <a href="${SHOP_URL}" style="display:inline-block;background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a;text-decoration:none;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:700;">
+                    <a href="${SHOP_URL}" style="display:inline-block;background:${BRONS};color:#ffffff;text-decoration:none;padding:12px 22px;border-radius:8px;font-size:14px;font-weight:700;">
                       Naar de webshop
                     </a>
                   </td>
@@ -167,12 +157,12 @@ const buildEmail = ({ name, totalWh, totalWp, panels, continuW, victron, devices
           </tr>
 
           <tr>
-            <td style="background:#0f172a;border-radius:0 0 20px 20px;padding:24px 32px;text-align:center;border-top:1px solid #1e293b;">
-              <p style="color:#475569;font-size:12px;margin:0 0 6px;">
+            <td style="background:${GROEN};border-radius:0 0 12px 12px;padding:22px 32px;text-align:center;">
+              <p style="color:#cfe0d4;font-size:12px;margin:0 0 6px;">
                 Vragen? Stuur een mail naar info@duurzaamopwielen.nl
               </p>
-              <p style="color:#334155;font-size:11px;margin:0;">
-                Duurzaam op Wielen
+              <p style="color:#9fbfa9;font-size:11px;margin:0;">
+                Duurzaam op Wielen, off grid systems
               </p>
             </td>
           </tr>
@@ -185,15 +175,15 @@ const buildEmail = ({ name, totalWh, totalWp, panels, continuW, victron, devices
 </html>`;
 };
 
-const addToShopify = async ({ name, email, totalWh, totalWp, panels, continuW, victron }) => {
+const addToShopify = async ({ name, email, totalWh, totalWp, continuW, victron }) => {
   if (!SHOPIFY_STORE || !SHOPIFY_API_KEY) return;
   const firstName = name.split(" ")[0];
   const lastName  = name.split(" ").slice(1).join(" ") || "";
   const note = [
     "=== Off-Grid Rapport ===",
     "Verbruik: " + Math.round(totalWh) + " Wh/dag",
-    "Zonnepanelen: " + totalWp + " Wp (~" + panels + " panelen a 400Wp)",
-    continuW > 0 ? "Continu vermogen: " + Math.round(continuW) + "W" : null,
+    "Zonnepanelen: " + totalWp + " Wp",
+    continuW > 0 ? "Continue vermogen: " + Math.round(continuW) + "W" : null,
     continuW > 0 ? "Omvormer: " + victron.multiplus + (victron.quattro ? " of " + victron.quattro : "") : null,
     "Bron: Off-Grid Calculator",
   ].filter(Boolean).join("\n");
@@ -228,7 +218,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Methods", "POST");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  const { name, email, totalWh, totalWp, panels, continuW, victron, devices, shopUrls } = req.body;
+  const { name, email, totalWh, totalWp, continuW, victron, groter, devices, shopUrls } = req.body;
 
   if (!name || !email || !totalWh) {
     return res.status(400).json({ error: "Ontbrekende gegevens" });
@@ -244,8 +234,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: "Duurzaam op Wielen <" + FROM_EMAIL + ">",
         to: [email],
-        subject: "Jouw off-grid rapport - " + Math.round(totalWh) + " Wh/dag" + (continuW > 0 ? " - " + victron.multiplus : ""),
-        html: buildEmail({ name, totalWh, totalWp, panels, continuW, victron, devices, shopUrls }),
+        subject: "Jouw off-grid rapport: " + Math.round(totalWh) + " Wh per dag" + (continuW > 0 && victron ? ", " + victron.multiplus : ""),
+        html: buildEmail({ name, totalWh, totalWp, continuW, victron, groter, devices, shopUrls }),
       }),
     });
 
@@ -254,7 +244,7 @@ export default async function handler(req, res) {
       throw new Error("Resend fout: " + JSON.stringify(err));
     }
 
-    await addToShopify({ name, email, totalWh, totalWp, panels, continuW, victron }).catch(console.error);
+    await addToShopify({ name, email, totalWh, totalWp, continuW, victron }).catch(console.error);
 
     return res.status(200).json({ success: true });
 
